@@ -5,9 +5,21 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/EscenaInicial.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 0
+    path: Assets/Scenes/Cristian.unity
+    guid: 21c0c3c2eb71be447923b378a3a2a8b1
+  - enabled: 0
+    path: "Assets/Scenes/\xC1lvaro.unity"
+    guid: 0cca0d93450733b4e9dc12b309f7d6ba
+  - enabled: 0
+    path: Assets/Scenes/Daniel.unity
+    guid: 38ea26ac71f4279478bcdd40aa68a0cd
+  - enabled: 0
+    path: "Assets/Scenes/Tom\xE1s.unity"
+    guid: dde4bde839464f6468c01e4b78cc60ca
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: e88920d779d56d64b9572e1a12b69d04, type: 2}
