@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &4169730437909578665
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: b8def7e71132bbd4eb1abd95598ea4ea, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b8def7e71132bbd4eb1abd95598ea4ea, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b8def7e71132bbd4eb1abd95598ea4ea, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b8def7e71132bbd4eb1abd95598ea4ea, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 33.27484
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b8def7e71132bbd4eb1abd95598ea4ea, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.5796394
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b8def7e71132bbd4eb1abd95598ea4ea, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.3339219
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b8def7e71132bbd4eb1abd95598ea4ea, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b8def7e71132bbd4eb1abd95598ea4ea, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b8def7e71132bbd4eb1abd95598ea4ea, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b8def7e71132bbd4eb1abd95598ea4ea, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b8def7e71132bbd4eb1abd95598ea4ea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b8def7e71132bbd4eb1abd95598ea4ea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b8def7e71132bbd4eb1abd95598ea4ea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b8def7e71132bbd4eb1abd95598ea4ea, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5689015622675107435, guid: b8def7e71132bbd4eb1abd95598ea4ea, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1216918298589852682, guid: ee2117df3d9be5143a263b8c52639950, type: 3}
+    - target: {fileID: -4908231508303466649, guid: b8def7e71132bbd4eb1abd95598ea4ea, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1216918298589852682, guid: ee2117df3d9be5143a263b8c52639950, type: 3}
+    - target: {fileID: -4897732323685117858, guid: b8def7e71132bbd4eb1abd95598ea4ea, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: -4856296291761766380, guid: 0ae41ef0e1ee4084eb49de3c7aa05932, type: 3}
+    - target: {fileID: -2627130289593403333, guid: b8def7e71132bbd4eb1abd95598ea4ea, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1216918298589852682, guid: ee2117df3d9be5143a263b8c52639950, type: 3}
+    - target: {fileID: 919132149155446097, guid: b8def7e71132bbd4eb1abd95598ea4ea, type: 3}
+      propertyPath: m_Name
+      value: SeaSaw
+      objectReference: {fileID: 0}
+    - target: {fileID: 2229032678205019293, guid: b8def7e71132bbd4eb1abd95598ea4ea, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 2ae051fef5184a0468090e879c694ddc, type: 2}
+    - target: {fileID: 6848177800374843494, guid: b8def7e71132bbd4eb1abd95598ea4ea, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1216918298589852682, guid: ee2117df3d9be5143a263b8c52639950, type: 3}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b8def7e71132bbd4eb1abd95598ea4ea, type: 3}
