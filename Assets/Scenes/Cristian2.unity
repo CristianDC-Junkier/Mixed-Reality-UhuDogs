@@ -176,6 +176,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2059372467712692517, guid: 21a81e2ef543ec74186f46775a525fb4, type: 3}
+      propertyPath: requestScenePermissionOnStartup
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2059372467712692517, guid: 21a81e2ef543ec74186f46775a525fb4, type: 3}
       propertyPath: _headPoseRelativeOffsetTranslation.y
       value: 0
       objectReference: {fileID: 0}
@@ -245,7 +249,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3906123716953130672, guid: 21a81e2ef543ec74186f46775a525fb4, type: 3}
       propertyPath: m_ClearFlags
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3906123716953130672, guid: 21a81e2ef543ec74186f46775a525fb4, type: 3}
       propertyPath: orthographic
