@@ -18,7 +18,7 @@ public class DogParkAI : MonoBehaviour
     public float ballStopDistance = 2f;
 
     // Distancia para dejar pelota cerca del jugador.
-    public float bringBallStopDistance = 1.5f;
+    public float bringBallStopDistance = 2f;
 
     [Header("Movimiento")]
     public float walkSpeed = 1.4f;
@@ -28,8 +28,20 @@ public class DogParkAI : MonoBehaviour
 
     [Header("Comportamiento")]
     public float lookAtPlayerTime = 5f;
+
     public float minBarkTime = 25f;
     public float maxBarkTime = 60f;
+
+    [Header("Cacas")]
+    public GameObject poopPrefab;
+
+    public float minPoopTime = 40f;
+    public float maxPoopTime = 90f;
+
+    public int maxPoops = 2;
+
+    private int currentPoops;
+    private float nextPoopTime;
 
     private Animator animator;
     private NavMeshAgent agent;
@@ -47,24 +59,32 @@ public class DogParkAI : MonoBehaviour
         nextBarkTime =
             Time.time + Random.Range(minBarkTime, maxBarkTime);
 
+        nextPoopTime =
+            Time.time + Random.Range(minPoopTime, maxPoopTime);
+
         StartCoroutine(WanderRoutine());
     }
 
     void Update()
     {
         // BOTÓN A QUEST
+        // El perro viene hacia ti
+
         if (OVRInput.GetDown(OVRInput.Button.One))
         {
             CallDog();
         }
 
         // BOTÓN B QUEST
+        // El perro busca la pelota
+
         if (OVRInput.GetDown(OVRInput.Button.Two))
         {
             FetchBall();
         }
 
         // Ladrido ocasional
+
         if (!comingToPlayer &&
             Time.time >= nextBarkTime)
         {
@@ -74,7 +94,20 @@ public class DogParkAI : MonoBehaviour
                 Time.time + Random.Range(minBarkTime, maxBarkTime);
         }
 
+        // HACER CACA
+
+        if (!comingToPlayer &&
+            currentPoops < maxPoops &&
+            Time.time >= nextPoopTime)
+        {
+            CreatePoop();
+
+            nextPoopTime =
+                Time.time + Random.Range(minPoopTime, maxPoopTime);
+        }
+
         // Dormir pelota si casi no se mueve
+
         if (!carryingBall && ball != null)
         {
             Rigidbody rb = ball.GetComponent<Rigidbody>();
@@ -156,6 +189,7 @@ public class DogParkAI : MonoBehaviour
 
         // Si la pelota está demasiado cerca del jugador,
         // el perro NO va.
+
         if (distance < minBallDistanceFromPlayer)
             return;
 
@@ -173,14 +207,12 @@ public class DogParkAI : MonoBehaviour
         animator.SetBool("walking", false);
         animator.SetBool("run", true);
 
-        while (playerTarget != null &&
-               Vector3.Distance(
-                   transform.position,
-                   playerTarget.position) >
-               playerStopDistance)
-        {
-            agent.SetDestination(playerTarget.position);
+        agent.SetDestination(playerTarget.position);
 
+        while (agent.pathPending ||
+               agent.remainingDistance >
+               agent.stoppingDistance)
+        {
             yield return null;
         }
 
@@ -274,16 +306,16 @@ public class DogParkAI : MonoBehaviour
         // VOLVER AL JUGADOR
 
         agent.isStopped = false;
+
         agent.stoppingDistance =
             bringBallStopDistance;
 
-        while (Vector3.Distance(
-                   transform.position,
-                   playerTarget.position) >
-               bringBallStopDistance)
-        {
-            agent.SetDestination(playerTarget.position);
+        agent.SetDestination(playerTarget.position);
 
+        while (agent.pathPending ||
+               agent.remainingDistance >
+               agent.stoppingDistance)
+        {
             yield return null;
         }
 
@@ -341,6 +373,70 @@ public class DogParkAI : MonoBehaviour
         comingToPlayer = false;
     }
 
+    void CreatePoop()
+    {
+        if (poopPrefab == null)
+            return;
+
+        Vector3 poopPosition =
+            transform.position -
+            transform.forward * 0.4f;
+
+        poopPosition.y = transform.position.y;
+
+        GameObject poop =
+            Instantiate(
+                poopPrefab,
+                poopPosition,
+                Quaternion.identity);
+
+        // ASIGNAR REFERENCIA AL PERRO
+
+        PoopBehaviour poopBehaviour =
+            poop.GetComponent<PoopBehaviour>();
+
+        if (poopBehaviour != null)
+        {
+            poopBehaviour.dog = this;
+        }
+
+        currentPoops++;
+
+        StartCoroutine(
+            RemovePoopAfterTime(
+                poop,
+                120f));
+    }
+
+    IEnumerator RemovePoopAfterTime(
+        GameObject poop,
+        float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        if (poop != null)
+        {
+            Destroy(poop);
+
+            currentPoops--;
+
+            if (currentPoops < 0)
+            {
+                currentPoops = 0;
+            }
+        }
+    }
+
+    public void RemovePoopFromCount()
+    {
+        currentPoops--;
+
+        if (currentPoops < 0)
+        {
+            currentPoops = 0;
+        }
+    }
+
     void UpdateBallCarry()
     {
         if (!carryingBall)
@@ -349,7 +445,8 @@ public class DogParkAI : MonoBehaviour
         if (ball == null || mouthPoint == null)
             return;
 
-        // CLAVAR pelota EXACTAMENTE en MouthPoint
+        // CLAVAR pelota EXACTAMENTE
+        // en MouthPoint
 
         ball.position = mouthPoint.position;
         ball.rotation = mouthPoint.rotation;
@@ -406,6 +503,7 @@ public class DogParkAI : MonoBehaviour
 
         // Mientras mira al jugador,
         // no auto-rotamos con navegación.
+
         if (comingToPlayer)
             return;
 

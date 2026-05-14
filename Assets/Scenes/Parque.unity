@@ -7723,7 +7723,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.0049471394, y: 0.004093631, z: 0.008812439}
+  m_Size: {x: 0.006947139, y: 0.004093631, z: 0.01081244}
   m_Center: {x: -0.001202649, y: 0.00000002976648, z: 0.00009074807}
 --- !u!1 &1156907356 stripped
 GameObject:
@@ -9112,7 +9112,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.0049471394, y: 0.0040936316, z: 0.008812439}
+  m_Size: {x: 0.0049471394, y: 0.004093631, z: 0.01081244}
   m_Center: {x: -0.0012026192, y: -5.4090066e-12, z: 0.000090749}
 --- !u!1 &1409602102 stripped
 GameObject:
@@ -11968,6 +11968,10 @@ MonoBehaviour:
   lookAtPlayerTime: 5
   minBarkTime: 25
   maxBarkTime: 60
+  poopPrefab: {fileID: 8422485754694478115, guid: 2d3747f03e206f24d88aedc790118243, type: 3}
+  minPoopTime: 5
+  maxPoopTime: 10
+  maxPoops: 2
 --- !u!4 &1827635444 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5087551840219002719, guid: 62270840728a9f842ac7dcf2dc6f2b4f, type: 3}
@@ -13199,11 +13203,11 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.0049471394, y: 0.004093631, z: 0.008812439}
+  m_Size: {x: 0.006947139, y: 0.004093631, z: 0.010812439}
   m_Center: {x: -0.0012026527, y: 0.0000000036894485, z: 0.00009074854}
 --- !u!1 &2020146049
 GameObject:
@@ -13891,9 +13895,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2268498710050189511, guid: f0f9d518f701b7947b15f3c8433adbfa, type: 3}
+      propertyPath: m_TagString
+      value: trashbin
+      objectReference: {fileID: 0}
     - target: {fileID: 2825302309557888570, guid: f0f9d518f701b7947b15f3c8433adbfa, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5248232347027654047, guid: f0f9d518f701b7947b15f3c8433adbfa, type: 3}
+      propertyPath: m_TagString
+      value: trashbin
+      objectReference: {fileID: 0}
+    - target: {fileID: 6401161528706441805, guid: f0f9d518f701b7947b15f3c8433adbfa, type: 3}
+      propertyPath: m_TagString
+      value: trashbin
       objectReference: {fileID: 0}
     - target: {fileID: 8539556752194183720, guid: f0f9d518f701b7947b15f3c8433adbfa, type: 3}
       propertyPath: m_Name
