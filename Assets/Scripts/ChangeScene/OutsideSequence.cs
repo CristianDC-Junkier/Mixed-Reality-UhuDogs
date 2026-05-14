@@ -21,36 +21,31 @@ public class OutsideSequence : MonoBehaviour
 
     void Start()
     {
-        if (darkScreen != null)  darkScreen.color = new Color(0, 0, 0, 0);
-
-        StartCoroutine(WaitInput());
+        if (darkScreen != null) darkScreen.color = new Color(0, 0, 0, 0);
+        StartCoroutine(WaitTransition());
     }
 
-    IEnumerator WaitInput()
+    IEnumerator WaitTransition()
     {
         while (true)
         {
-            // ===== MANDO DERECHO =====
-            if (
-                OVRInput.GetDown(OVRInput.Button.One) || // A
-                OVRInput.GetDown(OVRInput.Button.Two) || // B
-                OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger) > 0.8f ||
-                OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger) > 0.8f
-            )
+            // ===== MANDO DERECHO (Secondary) =====
+            if (OVRInput.GetDown(OVRInput.Button.One) ||
+                OVRInput.GetDown(OVRInput.Button.Two) ||
+                OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) > 0.8f ||
+                OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger) > 0.8f)
             {
-                yield return StartCoroutine(TransitionAndLoad(rightScene.name));
+                yield return StartCoroutine(ChangeTransition(rightScene.name));
                 yield break;
             }
 
-            // ===== MANDO IZQUIERDO =====
-            if (
-                OVRInput.GetDown(OVRInput.Button.Three) || // X
-                OVRInput.GetDown(OVRInput.Button.Four) ||  // Y
-                OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) > 0.8f ||
-                OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger) > 0.8f
-            )
+            // ===== MANDO IZQUIERDO (Primary) =====
+            if (OVRInput.GetDown(OVRInput.Button.Three) ||
+                OVRInput.GetDown(OVRInput.Button.Four) ||
+                OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger) > 0.8f ||
+                OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger) > 0.8f)
             {
-                yield return StartCoroutine(TransitionAndLoad(leftScene.name));
+                yield return StartCoroutine(ChangeTransition(leftScene.name));
                 yield break;
             }
 
@@ -58,18 +53,18 @@ public class OutsideSequence : MonoBehaviour
         }
     }
 
-    IEnumerator TransitionAndLoad(string sceneName)
+    IEnumerator ChangeTransition(string sceneName)
     {
+        Debug.Log("Iniciando transición hacia: " + sceneName);
+
         float tiempo = 0;
         float duracionFade = 1.5f;
 
         while (tiempo < duracionFade)
         {
             tiempo += Time.deltaTime;
-
             if (darkScreen != null)
                 darkScreen.color = new Color(0, 0, 0, Mathf.Clamp01(tiempo / duracionFade));
-
             yield return null;
         }
 
@@ -79,16 +74,16 @@ public class OutsideSequence : MonoBehaviour
                 hijo.gameObject.SetActive(false);
         }
 
-        if (audioSource != null)
+        if (audioSource != null && doorSound != null)
         {
             audioSource.Stop();
             audioSource.clip = doorSound;
-            audioSource.volume = 1f;
             audioSource.Play();
-
+            Debug.Log("Reproduciendo sonido de puerta...");
             yield return new WaitForSeconds(doorSound.length);
         }
 
+        Debug.Log("Cargando escena final...");
         SceneManager.LoadScene(sceneName);
     }
 }

@@ -29533,7 +29533,6 @@ GameObject:
   - component: {fileID: 2926232933741372004}
   - component: {fileID: 8834160595110274794}
   - component: {fileID: 5635635478732586056}
-  - component: {fileID: 3495831042830885572}
   m_Layer: 4
   m_Name: PlayerController
   m_TagString: Player
@@ -33670,21 +33669,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &3495831042830885572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2926232933741372006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce20d7547d9b91e4cb17a2fe7962025f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AutoCrouch
-  centerEyeAnchor: {fileID: 501347820322460194}
-  locomotor: {fileID: 5635635478732586056}
-  crouchAngle: 45
 --- !u!1 &3496294914741016465
 GameObject:
   m_ObjectHideFlags: 0

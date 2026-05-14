@@ -20718,8 +20718,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7399483279694299377, guid: e052a8690bbd2b44c80961621ad7161b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7399483279694299377, guid: e052a8690bbd2b44c80961621ad7161b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7399483279694299377, guid: e052a8690bbd2b44c80961621ad7161b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7399483279694299377, guid: e052a8690bbd2b44c80961621ad7161b, type: 3}
       propertyPath: m_LocalPosition.y
       value: 2.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 7399483279694299377, guid: e052a8690bbd2b44c80961621ad7161b, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7779410372137576460, guid: e052a8690bbd2b44c80961621ad7161b, type: 3}
       propertyPath: distance
@@ -20729,6 +20745,14 @@ PrefabInstance:
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 8031871137037271945}
+    - target: {fileID: 8807500356852228067, guid: e052a8690bbd2b44c80961621ad7161b, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -12.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8807500356852228067, guid: e052a8690bbd2b44c80961621ad7161b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1.64
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -56392,6 +56416,7 @@ GameObject:
   - component: {fileID: 1376671367757330241}
   - component: {fileID: 2861502697203101155}
   - component: {fileID: 6413260967191950191}
+  - component: {fileID: 6413260967191950192}
   m_Layer: 4
   m_Name: PlayerController
   m_TagString: Player
@@ -61659,10 +61684,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6011303958641486364}
   - {fileID: 8589543367887674526}
   - {fileID: 8589543368902345977}
   - {fileID: 4361510087812366987}
+  - {fileID: 6011303958641486364}
   - {fileID: 369057042547677415}
   - {fileID: 2478123846433057961}
   - {fileID: 1148710242354605387}
@@ -69984,6 +70009,20 @@ MonoBehaviour:
   centerEyeAnchor: {fileID: 8031871137037271945}
   locomotor: {fileID: 2861502697203101155}
   crouchAngle: 45
+--- !u!114 &6413260967191950192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4692685151708738509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d87b2bd04e0021c469b232456646a408, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  firstPersonLocomotor: {fileID: 2861502697203101155}
+  playerRigidbody: {fileID: 4692685151708738510}
 --- !u!1 &6414956153595872826
 GameObject:
   m_ObjectHideFlags: 0

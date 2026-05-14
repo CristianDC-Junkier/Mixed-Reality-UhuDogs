@@ -3,10 +3,16 @@ using Oculus.Interaction.Locomotion;
 
 public class AutoCrouch : MonoBehaviour
 {
+    [Header("Camara Jugador")]
     public Transform centerEyeAnchor;
+
+    [Header("Script de Movimiento")]
     public FirstPersonLocomotor locomotor;
 
+    [Header("Angulo de agache")]
     public float crouchAngle = 45f;
+
+    private bool autoCrouch;
 
     void Update()
     {
@@ -20,6 +26,15 @@ public class AutoCrouch : MonoBehaviour
 
         bool shouldCrouch = pitch > crouchAngle;
 
-        locomotor.Crouch(shouldCrouch);
+        if (shouldCrouch && !autoCrouch)
+        {
+            locomotor.Crouch(true);
+            autoCrouch = true;
+        }
+        else if (!shouldCrouch && autoCrouch)
+        {
+            locomotor.Crouch(false);
+            autoCrouch = false;
+        }
     }
 }
