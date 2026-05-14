@@ -40421,8 +40421,8 @@ MonoBehaviour:
   _exitHotspotDistance: 0.3
   _autoUpdateHeight: 1
   _defaultHeight: 1.4
-  _heightOffset: 0.7
-  _crouchHeightOffset: -1
+  _heightOffset: 1.2
+  _crouchHeightOffset: -1.5
   _speedFactor: 30
   _crouchSpeedFactor: 10
   _runningSpeedFactor: 50
