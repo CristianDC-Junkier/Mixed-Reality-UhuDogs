@@ -13,4 +13,12 @@ public class MainMenuController : MonoBehaviour
     {
         
     }
+<<<<<<< Updated upstream
+=======
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+>>>>>>> Stashed changes
 }
