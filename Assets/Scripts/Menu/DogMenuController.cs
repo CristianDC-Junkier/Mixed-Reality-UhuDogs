@@ -2,31 +2,24 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using UnityEngine.Audio;
 
 public class DogMenuController : MonoBehaviour
 {
     public TMP_InputField nameField;
+
     public TMP_Text savedText;
     public TMP_Text nEnergy;
     public TMP_Text nHunger;
     public TMP_Text nThirst;
     public TMP_Text nSleep;
+
     public Image barEnergy;
     public Image barHunger;
     public Image barThirst;
     public Image barSleep;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public AudioSource clip;
 
     private void OnEnable()
     {
@@ -51,6 +44,11 @@ public class DogMenuController : MonoBehaviour
     {
         text.text = value + "%";
         bar.fillAmount = value / 100f;
+
+        if (value > 55)
+            text.color = Color.white;
+        else
+            text.color = Color.black;
     }
 
     public void SaveName()
@@ -58,5 +56,10 @@ public class DogMenuController : MonoBehaviour
         PlayerPrefs.SetString("dogName", nameField.text);
         PlayerPrefs.Save();
         savedText.text = "Guardado";
+    }
+
+    public void PlayClick()
+    {
+        clip.Play();
     }
 }

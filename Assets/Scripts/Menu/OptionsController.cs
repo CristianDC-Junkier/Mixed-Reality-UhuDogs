@@ -13,6 +13,8 @@ public class OptionsController : MonoBehaviour
     public float defaultVolume = 0.5f;
     public float defaultBrightness = 0.37f;
     private float lastVolume;
+    
+    public AudioSource clip;
 
     // Start is called before the first frame update
     void Start()
@@ -73,5 +75,10 @@ public class OptionsController : MonoBehaviour
         sliderBrightness.value = defaultBrightness;
         valueBrightness = defaultBrightness;
         PlayerPrefs.SetFloat("brightness", defaultBrightness);
+    }
+
+    public void PlayClick()
+    {
+        clip.Play();
     }
 }

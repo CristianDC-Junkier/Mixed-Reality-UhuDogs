@@ -4,9 +4,15 @@ using System.Collections;
 public class ClicksErrorController : MonoBehaviour
 {
     public AudioSource audioSource;
+    public AudioSource clip;
 
     public AudioClip soundClick;
     public AudioClip soundError;
+
+    public void PlayClick()
+    {
+        clip.Play();
+    }
 
     public void PlaySounds()
     {

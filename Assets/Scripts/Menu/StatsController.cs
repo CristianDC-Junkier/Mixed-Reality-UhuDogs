@@ -8,6 +8,8 @@ public class StatsController : MonoBehaviour
     public TMP_Text nWalks;
     public TMP_Text nPoops;
     public TMP_Text distance;
+    
+    public AudioSource clip;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -25,9 +27,8 @@ public class StatsController : MonoBehaviour
         distance.text = dist.ToString();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PlayClick()
     {
-        
+        clip.Play();
     }
 }
