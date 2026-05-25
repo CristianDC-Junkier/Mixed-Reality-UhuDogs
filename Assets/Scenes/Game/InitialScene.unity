@@ -3650,6 +3650,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 501347820322460194}
     - target: {fileID: 794200169521797689, guid: 05234df5b7ff34b42a3939af2189b37f, type: 3}
+      propertyPath: nextScene
+      value: 
+      objectReference: {fileID: 102900000, guid: 6a45762de8833ba43b7e942c97d61174, type: 3}
+    - target: {fileID: 794200169521797689, guid: 05234df5b7ff34b42a3939af2189b37f, type: 3}
       propertyPath: darkScreen
       value: 
       objectReference: {fileID: 3759042437776246673}
@@ -29263,7 +29267,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2926232932668439909
 Transform:
   m_ObjectHideFlags: 0

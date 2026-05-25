@@ -10,6 +10,7 @@ public class DogParkAI : MonoBehaviour
     public Transform mouthPoint;
 
     [Header("Audio")]
+    public AudioSource audioSource;
     public AudioClip barkSound;
 
     [Header("Pelota")]
@@ -40,7 +41,6 @@ public class DogParkAI : MonoBehaviour
 
     private Animator animator;
     private NavMeshAgent agent;
-    private AudioSource audioSource;
 
     private bool comingToPlayer;
     private bool carryingBall;
@@ -52,7 +52,6 @@ public class DogParkAI : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
-        audioSource = GetComponent<AudioSource>();
 
         nextBarkTime =
             Time.time + Random.Range(minBarkTime,maxBarkTime);
