@@ -1,4 +1,8 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
+using System.Collections;
 
 public class PauseGame : MonoBehaviour
 {
@@ -8,7 +12,13 @@ public class PauseGame : MonoBehaviour
     [Header("Colision del personaje")]
     public Rigidbody playerRigidbody;
 
-    private bool isPaused = false;
+    [Header("Menu de pausa")]
+    public GameObject pauseMenu;
+
+    void Start()
+    {
+        pauseMenu.SetActive(false);
+    }
 
     void Update()
     {
@@ -20,9 +30,8 @@ public class PauseGame : MonoBehaviour
 
     public void TogglePause()
     {
-        isPaused = !isPaused;
 
-        if (isPaused)
+        if (Time.timeScale != 0f)
             Pause();
         else
             Resume();
@@ -41,10 +50,13 @@ public class PauseGame : MonoBehaviour
             playerRigidbody.angularVelocity = Vector3.zero;
             playerRigidbody.isKinematic = true;
         }
+
+        pauseMenu.SetActive(true);
     }
 
     void Resume()
     {
+
         Time.timeScale = 1f;
 
         if (playerRigidbody != null)
@@ -56,5 +68,7 @@ public class PauseGame : MonoBehaviour
 
         if (firstPersonLocomotor != null)
             firstPersonLocomotor.enabled = true;
+
+        pauseMenu.SetActive(false);
     }
 }

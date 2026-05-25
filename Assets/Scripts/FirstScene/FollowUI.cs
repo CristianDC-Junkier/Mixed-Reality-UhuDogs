@@ -11,17 +11,19 @@ public class FollowUI : MonoBehaviour
     {
         if (playerCamera == null) return;
 
-        // Posición frente a la cámara
         Vector3 targetPos = playerCamera.position + (playerCamera.forward * distance);
-        transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * smoothness);
+        transform.position = Vector3.Lerp(
+            transform.position,
+            targetPos,
+            Time.unscaledDeltaTime * smoothness
+        );
 
-        // Rotacion orientada al jugador (solo eje Y para VR)
         Vector3 directionGlance = playerCamera.position - transform.position;
         directionGlance.y = 0;
 
         if (directionGlance != Vector3.zero)
         {
-            transform.rotation = Quaternion.LookRotation(-directionGlance); // Invertido para que el UI mire al jugador
+            transform.rotation = Quaternion.LookRotation(-directionGlance);
         }
     }
 }

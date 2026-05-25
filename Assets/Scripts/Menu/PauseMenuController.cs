@@ -1,32 +1,79 @@
-using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
-public class PauseMenuController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class PauseMenuController : MonoBehaviour
 {
-    public TMP_Text buttonText;
+    [Header("Transición oscura")]
+    public Image darkScreen;
 
-    public Color normalColor;
-    public Color hoverColor;
-    public Color clickColor;
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip doorSound;
 
-    private void OnEnable()
+    [Header("Script de Movimiento")]
+    public MonoBehaviour firstPersonLocomotor;
+
+    [Header("Colision del personaje")]
+    public Rigidbody playerRigidbody;
+
+    [Header("Menu de pausa")]
+    public GameObject pauseMenu;
+
+    void Start()
     {
-        buttonText.color = normalColor;
+        if (darkScreen != null) darkScreen.color = new Color(0, 0, 0, 0);
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+
+    public void ResumeGame()
     {
-        buttonText.color = hoverColor;
+        Time.timeScale = 1f;
+
+        if (playerRigidbody != null)
+        {
+            playerRigidbody.isKinematic = false;
+            playerRigidbody.linearVelocity = Vector3.zero;
+            playerRigidbody.angularVelocity = Vector3.zero;
+        }
+
+        if (firstPersonLocomotor != null)
+            firstPersonLocomotor.enabled = true;
+
+        pauseMenu.SetActive(false);
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public void QuitGame()
     {
-        buttonText.color = normalColor;
+        StartCoroutine(Quitransition()); // Arrancamos la transición
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    IEnumerator Quitransition()
     {
-        buttonText.color = clickColor;
+        float tiempo = 0;
+        float duracionFade = 1.5f;
+
+        // Fundido a negro
+        while (tiempo < duracionFade)
+        {
+            tiempo += Time.unscaledDeltaTime;
+
+            if (darkScreen != null)
+                darkScreen.color = new Color(0, 0, 0, Mathf.Clamp01(tiempo / duracionFade));
+
+            yield return null;
+        }
+
+        audioSource.Stop();
+
+        // Música de transición final antes de cambiar escena
+        audioSource.clip = doorSound;
+        audioSource.volume = 1f;
+        audioSource.Play();
+
+        yield return new WaitForSecondsRealtime(doorSound.length);
+
+        Application.Quit();
     }
 }
