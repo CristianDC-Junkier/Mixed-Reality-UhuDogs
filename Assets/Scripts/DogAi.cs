@@ -4,147 +4,304 @@ using UnityEngine.AI;
 
 public class DogAI : MonoBehaviour
 {
+    [Header("Referencias")]
     public Transform bowlTarget;
 
-    public float minTimeToGetHungry = 20f;
-    public float maxTimeToGetHungry = 45f;
-    public float eatDuration = 5f;
+    [Header("Comida")]
+    public GameObject foodObjectToHide;
 
-    public float minWanderWait = 2f;
-    public float maxWanderWait = 5f;
+    [Header("Posición exacta comida")]
+    public Vector3 eatWorldPosition;
+    public float eatRotationY = 0f;
+
+    [Header("Hambre")]
+    [Range(1,100)]
+    public int hunger = 20;
+
+    public int hungryThreshold = 40;
+    public int fullAfterEating = 100;
+
+    public float eatAnimationDuration = 3.5f;
+
+    public float hungerTickAbove50 = 5f;
+    public float hungerTickBelow50 = 10f;
+
+    [Header("Movimiento")]
     public float wanderRadius = 4f;
+    public float minWalkTime = 6f;
+    public float maxWalkTime = 14f;
+    public float pauseBetweenWalks = 0.3f;
 
-    public float minSitTime = 2f;
-    public float maxSitTime = 5f;
-
-    [Range(0f, 1f)] public float sitChance = 0.35f;
-    [Range(0f, 1f)] public float barkChance = 0.2f;
+    [Header("Ladrido")]
+    public float minBarkTime = 35f;
+    public float maxBarkTime = 90f;
+    public float barkDuration = 1.5f;
 
     private Animator animator;
     private NavMeshAgent agent;
 
-    private float hungerTimer;
-    private float nextHungerTime;
+    private bool isEating;
+    private bool isBarking;
+
+    private float nextBarkTime;
 
     void Start()
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
 
-        ChooseNextHungerTime();
+        nextBarkTime =
+            Time.time +
+            Random.Range(
+                minBarkTime,
+                maxBarkTime);
 
-        StartCoroutine(DogRoutine());
+        StartCoroutine(
+            HungerRoutine());
+
+        StartCoroutine(
+            MainRoutine());
     }
 
-    IEnumerator DogRoutine()
+    IEnumerator HungerRoutine()
     {
-        while (true)
+        while(true)
         {
-            hungerTimer += Random.Range(1f, 3f);
+            float waitTime =
+                hunger > 50
+                ? hungerTickAbove50
+                : hungerTickBelow50;
 
-            if (hungerTimer >= nextHungerTime)
+            yield return new WaitForSeconds(
+                waitTime);
+
+            if(!isEating)
+            {
+                hunger--;
+
+                hunger =
+                    Mathf.Clamp(
+                        hunger,
+                        1,
+                        100);
+            }
+        }
+    }
+
+    IEnumerator MainRoutine()
+    {
+        while(true)
+        {
+            if(!isEating &&
+               hunger < hungryThreshold)
             {
                 yield return GoEat();
-                hungerTimer = 0f;
-                ChooseNextHungerTime();
             }
             else
             {
-                if (Random.value < sitChance)
-                {
-                    yield return SitForAWhile();
-                }
-                else
-                {
-                    yield return Wander();
-                }
-
-                if (Random.value < barkChance)
-                {
-                    animator.SetTrigger("bark");
-                    yield return new WaitForSeconds(1.2f);
-                }
+                yield return WanderForAWhile();
             }
 
-            yield return new WaitForSeconds(Random.Range(minWanderWait, maxWanderWait));
+            if(!isEating &&
+               !isBarking &&
+               Time.time >= nextBarkTime)
+            {
+                yield return BarkRoutine();
+            }
+
+            yield return new WaitForSeconds(
+                pauseBetweenWalks);
         }
     }
 
-    IEnumerator Wander()
+    IEnumerator WanderForAWhile()
     {
-        Vector3 destination = GetRandomNavMeshPoint(transform.position, wanderRadius);
+        if(isEating || isBarking)
+            yield break;
 
-        agent.isStopped = false;
-        agent.SetDestination(destination);
+        Vector3 destination =
+            GetRandomNavMeshPoint(
+                transform.position,
+                wanderRadius);
 
-        animator.SetBool("walking", true);
+        agent.isStopped=false;
 
-        while (agent.pathPending || agent.remainingDistance > agent.stoppingDistance + 0.1f || agent.velocity.magnitude > 0.05f)
+        agent.SetDestination(
+            destination);
+
+        animator.SetBool(
+            "walking",
+            true);
+
+        float walkTime =
+            Random.Range(
+                minWalkTime,
+                maxWalkTime);
+
+        float timer=0f;
+
+        while(!isEating &&
+              !isBarking &&
+              timer<walkTime &&
+              (agent.pathPending ||
+               agent.remainingDistance >
+               agent.stoppingDistance+0.1f ||
+               agent.velocity.magnitude>0.05f))
         {
-            animator.SetBool("walking", true);
+            timer += Time.deltaTime;
+
             yield return null;
         }
 
-        animator.SetBool("walking", false);
+        animator.SetBool(
+            "walking",
+            false);
     }
 
     IEnumerator GoEat()
     {
-        if (bowlTarget == null)
-            yield break;
-
-        agent.isStopped = false;
-        agent.SetDestination(bowlTarget.position);
-
-        animator.SetBool("walking", true);
-
-        while (agent.pathPending || agent.remainingDistance > agent.stoppingDistance)
+        if(bowlTarget==null ||
+           isEating)
         {
-            animator.SetBool("walking", true);
+            yield break;
+        }
+
+        isEating=true;
+
+        agent.isStopped=false;
+
+        agent.SetDestination(
+            bowlTarget.position);
+
+        animator.SetBool(
+            "walking",
+            true);
+
+        while(agent.pathPending ||
+              agent.remainingDistance >
+              agent.stoppingDistance+0.1f)
+        {
             yield return null;
         }
 
-        animator.SetBool("walking", false);
+        agent.ResetPath();
 
-        animator.SetBool("eating", true);
-        yield return new WaitForSeconds(eatDuration);
-        animator.SetBool("eating", false);
-    }
+        agent.isStopped=true;
 
-    IEnumerator SitForAWhile()
-    {
-        agent.isStopped = true;
-        animator.SetBool("walking", false);
+        animator.SetBool(
+            "walking",
+            false);
 
-        animator.SetTrigger("sit");
+        // TELETRANSPORTE
 
-        yield return new WaitForSeconds(Random.Range(minSitTime, maxSitTime));
+        agent.enabled=false;
 
-        animator.SetTrigger("stand");
+        transform.position=
+            eatWorldPosition;
 
-        yield return new WaitForSeconds(1.5f);
+        transform.rotation=
+            Quaternion.Euler(
+                0f,
+                eatRotationY,
+                0f);
 
-        agent.isStopped = false;
-    }
+        agent.enabled=true;
 
-    Vector3 GetRandomNavMeshPoint(Vector3 center, float radius)
-    {
-        for (int i = 0; i < 30; i++)
+        agent.Warp(
+            eatWorldPosition);
+
+        agent.isStopped=true;
+
+        // ACTIVAR COMER (TRIGGER)
+
+        animator.SetTrigger(
+            "eating");
+
+        // ESPERAR ANIMACIÓN ENTERA
+
+        yield return new WaitForSeconds(
+            eatAnimationDuration);
+
+        // ESCONDER COMIDA
+
+        if(foodObjectToHide!=null)
         {
-            Vector3 randomPoint = center + Random.insideUnitSphere * radius;
-            randomPoint.y = center.y;
+            foodObjectToHide.SetActive(
+                false);
+        }
 
-            if (NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, radius, NavMesh.AllAreas))
+        // SUBIR HAMBRE
+
+        hunger=
+            Mathf.Clamp(
+                fullAfterEating,
+                1,
+                100);
+
+        yield return new WaitForSeconds(
+            0.2f);
+
+        agent.isStopped=false;
+
+        isEating=false;
+    }
+
+    IEnumerator BarkRoutine()
+    {
+        if(isEating)
+            yield break;
+
+        isBarking=true;
+
+        agent.ResetPath();
+
+        agent.isStopped=true;
+
+        animator.SetBool(
+            "walking",
+            false);
+
+        animator.SetTrigger(
+            "bark");
+
+        yield return new WaitForSeconds(
+            barkDuration);
+
+        nextBarkTime=
+            Time.time+
+            Random.Range(
+                minBarkTime,
+                maxBarkTime);
+
+        agent.isStopped=false;
+
+        isBarking=false;
+    }
+
+    Vector3 GetRandomNavMeshPoint(
+        Vector3 center,
+        float radius)
+    {
+        for(int i=0;i<30;i++)
+        {
+            Vector3 randomPoint=
+                center+
+                Random.insideUnitSphere*
+                radius;
+
+            randomPoint.y=
+                center.y;
+
+            if(NavMesh.SamplePosition(
+                randomPoint,
+                out NavMeshHit hit,
+                radius,
+                NavMesh.AllAreas))
             {
                 return hit.position;
             }
         }
 
         return center;
-    }
-
-    void ChooseNextHungerTime()
-    {
-        nextHungerTime = Random.Range(minTimeToGetHungry, maxTimeToGetHungry);
     }
 }

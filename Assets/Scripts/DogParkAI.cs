@@ -9,15 +9,12 @@ public class DogParkAI : MonoBehaviour
     public Transform ball;
     public Transform mouthPoint;
 
+    [Header("Audio")]
+    public AudioClip barkSound;
+
     [Header("Pelota")]
-    // El perro SOLO irá a por la pelota
-    // si está MÁS LEJOS que esta distancia.
     public float minBallDistanceFromPlayer = 3f;
-
-    // Distancia para capturar pelota.
     public float ballStopDistance = 2f;
-
-    // Distancia para dejar pelota cerca del jugador.
     public float bringBallStopDistance = 2f;
 
     [Header("Movimiento")]
@@ -28,16 +25,14 @@ public class DogParkAI : MonoBehaviour
 
     [Header("Comportamiento")]
     public float lookAtPlayerTime = 5f;
-
+    public float barkDuration = 1.5f;
     public float minBarkTime = 25f;
     public float maxBarkTime = 60f;
 
     [Header("Cacas")]
     public GameObject poopPrefab;
-
     public float minPoopTime = 40f;
     public float maxPoopTime = 90f;
-
     public int maxPoops = 2;
 
     private int currentPoops;
@@ -45,9 +40,11 @@ public class DogParkAI : MonoBehaviour
 
     private Animator animator;
     private NavMeshAgent agent;
+    private AudioSource audioSource;
 
     private bool comingToPlayer;
     private bool carryingBall;
+    private bool isBarking;
 
     private float nextBarkTime;
 
@@ -55,107 +52,107 @@ public class DogParkAI : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        audioSource = GetComponent<AudioSource>();
 
         nextBarkTime =
-            Time.time + Random.Range(minBarkTime, maxBarkTime);
+            Time.time + Random.Range(minBarkTime,maxBarkTime);
 
         nextPoopTime =
-            Time.time + Random.Range(minPoopTime, maxPoopTime);
+            Time.time + Random.Range(minPoopTime,maxPoopTime);
 
         StartCoroutine(WanderRoutine());
     }
 
     void Update()
     {
-        // BOTÓN A QUEST
-        // El perro viene hacia ti
-
+        // Botón A
         if (OVRInput.GetDown(OVRInput.Button.One))
         {
             CallDog();
         }
 
-        // BOTÓN B QUEST
-        // El perro busca la pelota
-
+        // Botón B
         if (OVRInput.GetDown(OVRInput.Button.Two))
         {
             FetchBall();
         }
 
-        // Ladrido ocasional
+        // Ladrido automático
 
         if (!comingToPlayer &&
+            !isBarking &&
             Time.time >= nextBarkTime)
         {
-            animator.SetTrigger("bark");
-
-            nextBarkTime =
-                Time.time + Random.Range(minBarkTime, maxBarkTime);
+            StartCoroutine(BarkRoutine());
         }
 
-        // HACER CACA
+        // Cacas
 
         if (!comingToPlayer &&
+            !isBarking &&
             currentPoops < maxPoops &&
             Time.time >= nextPoopTime)
         {
             CreatePoop();
 
             nextPoopTime =
-                Time.time + Random.Range(minPoopTime, maxPoopTime);
+                Time.time +
+                Random.Range(
+                    minPoopTime,
+                    maxPoopTime);
         }
 
-        // Dormir pelota si casi no se mueve
+        // Dormir pelota
 
-        if (!carryingBall && ball != null)
+        if (!carryingBall && ball!=null)
         {
-            Rigidbody rb = ball.GetComponent<Rigidbody>();
+            Rigidbody rb =
+                ball.GetComponent<Rigidbody>();
 
-            if (rb != null)
+            if (rb!=null &&
+                rb.linearVelocity.magnitude<0.05f)
             {
-                if (rb.linearVelocity.magnitude < 0.05f)
-                {
-                    rb.linearVelocity = Vector3.zero;
-                    rb.angularVelocity = Vector3.zero;
-                }
+                rb.linearVelocity=Vector3.zero;
+                rb.angularVelocity=Vector3.zero;
             }
         }
     }
 
     IEnumerator WanderRoutine()
     {
-        while (true)
+        while(true)
         {
-            if (!comingToPlayer)
+            if(!comingToPlayer &&
+               !isBarking)
             {
-                agent.isStopped = false;
+                agent.isStopped=false;
 
-                agent.speed = walkSpeed;
-                agent.stoppingDistance = 0.3f;
+                agent.speed=walkSpeed;
 
-                animator.SetBool("run", false);
-                animator.SetBool("walking", true);
+                animator.SetBool(
+                    "run",
+                    false);
 
-                Vector3 destination =
+                animator.SetBool(
+                    "walking",
+                    true);
+
+                Vector3 destination=
                     GetRandomNavMeshPoint(
                         transform.position,
                         wanderRadius);
 
-                if (Vector3.Distance(
-                        transform.position,
-                        destination) > 0.5f)
-                {
-                    agent.SetDestination(destination);
+                agent.SetDestination(
+                    destination);
 
-                    while (!comingToPlayer &&
-                           (agent.pathPending ||
-                            agent.remainingDistance >
-                            agent.stoppingDistance ||
-                            agent.velocity.magnitude > 0.05f))
-                    {
-                        yield return null;
-                    }
+                while(
+                    !comingToPlayer &&
+                    !isBarking &&
+                    (agent.pathPending ||
+                    agent.remainingDistance>
+                    agent.stoppingDistance))
+                {
+                    yield return null;
                 }
             }
 
@@ -163,241 +160,219 @@ public class DogParkAI : MonoBehaviour
         }
     }
 
+    IEnumerator BarkRoutine()
+    {
+        isBarking=true;
+
+        agent.ResetPath();
+        agent.isStopped=true;
+
+        animator.SetBool(
+            "walking",
+            false);
+
+        animator.SetBool(
+            "run",
+            false);
+
+        // ANIMACIÓN
+
+        animator.SetTrigger(
+            "bark");
+
+        // SONIDO
+
+        if(audioSource!=null &&
+           barkSound!=null)
+        {
+            audioSource.PlayOneShot(
+                barkSound);
+        }
+
+        yield return new WaitForSeconds(
+            barkDuration);
+
+        isBarking=false;
+
+        agent.isStopped=false;
+
+        nextBarkTime=
+            Time.time+
+            Random.Range(
+                minBarkTime,
+                maxBarkTime);
+    }
+
     public void CallDog()
     {
-        if (!comingToPlayer &&
-            playerTarget != null)
+        if(!comingToPlayer &&
+           !isBarking)
         {
-            StartCoroutine(ComeToPlayerRoutine());
+            StartCoroutine(
+                ComeToPlayerRoutine());
         }
     }
 
     public void FetchBall()
     {
-        if (comingToPlayer)
+        if(comingToPlayer ||
+           isBarking)
             return;
 
-        if (ball == null ||
-            playerTarget == null ||
-            mouthPoint == null)
+        if(ball==null)
             return;
 
-        float distance =
+        float distance=
             Vector3.Distance(
                 playerTarget.position,
                 ball.position);
 
-        // Si la pelota está demasiado cerca del jugador,
-        // el perro NO va.
-
-        if (distance < minBallDistanceFromPlayer)
+        if(distance<
+           minBallDistanceFromPlayer)
             return;
 
-        StartCoroutine(FetchBallRoutine());
+        StartCoroutine(
+            FetchBallRoutine());
     }
 
     IEnumerator ComeToPlayerRoutine()
     {
-        comingToPlayer = true;
+        comingToPlayer=true;
 
-        agent.isStopped = false;
-        agent.speed = runSpeed;
-        agent.stoppingDistance = playerStopDistance;
+        agent.speed=runSpeed;
 
-        animator.SetBool("walking", false);
-        animator.SetBool("run", true);
+        animator.SetBool(
+            "walking",
+            false);
 
-        agent.SetDestination(playerTarget.position);
+        animator.SetBool(
+            "run",
+            true);
 
-        while (agent.pathPending ||
-               agent.remainingDistance >
-               agent.stoppingDistance)
+        agent.SetDestination(
+            playerTarget.position);
+
+        while(
+            agent.pathPending ||
+            agent.remainingDistance>
+            playerStopDistance)
         {
             yield return null;
         }
 
-        agent.ResetPath();
-        agent.isStopped = true;
+        animator.SetBool(
+            "run",
+            false);
 
-        animator.SetBool("run", false);
-        animator.SetBool("walking", false);
-
-        float timer = 0f;
-
-        while (timer < lookAtPlayerTime)
-        {
-            LookAtPlayer();
-
-            timer += Time.deltaTime;
-
-            yield return null;
-        }
-
-        agent.isStopped = false;
-
-        comingToPlayer = false;
+        comingToPlayer=false;
     }
 
     IEnumerator FetchBallRoutine()
     {
-        comingToPlayer = true;
+        comingToPlayer=true;
 
-        Rigidbody ballRb =
+        Rigidbody ballRb=
             ball.GetComponent<Rigidbody>();
 
-        Collider ballCollider =
+        Collider ballCollider=
             ball.GetComponent<Collider>();
 
-        // CORRER HACIA PELOTA
+        agent.speed=runSpeed;
 
-        agent.isStopped = false;
-        agent.speed = runSpeed;
-        agent.stoppingDistance = ballStopDistance;
+        animator.SetBool(
+            "walking",
+            false);
 
-        animator.SetBool("walking", false);
-        animator.SetBool("run", true);
+        animator.SetBool(
+            "run",
+            true);
 
-        while (true)
+        while(
+            Vector3.Distance(
+                transform.position,
+                ball.position)>
+            ballStopDistance)
         {
-            agent.SetDestination(ball.position);
-
-            float distanceToBall =
-                Vector3.Distance(
-                    transform.position,
-                    ball.position);
-
-            if (distanceToBall <= ballStopDistance)
-            {
-                break;
-            }
+            agent.SetDestination(
+                ball.position);
 
             yield return null;
         }
 
-        // PARAR AGENTE
-
-        agent.ResetPath();
-        agent.isStopped = true;
-
-        // APAGAR FÍSICA
-
-        if (ballRb != null)
+        if(ballRb!=null)
         {
-            ballRb.linearVelocity = Vector3.zero;
-            ballRb.angularVelocity = Vector3.zero;
+            ballRb.linearVelocity=
+                Vector3.zero;
 
-            ballRb.isKinematic = true;
-            ballRb.useGravity = false;
+            ballRb.angularVelocity=
+                Vector3.zero;
 
-            ballRb.Sleep();
+            ballRb.isKinematic=true;
         }
 
-        if (ballCollider != null)
+        if(ballCollider!=null)
         {
-            ballCollider.enabled = false;
+            ballCollider.enabled=false;
         }
 
-        // ACTIVAR MODO LLEVAR PELOTA
+        carryingBall=true;
 
-        carryingBall = true;
+        agent.SetDestination(
+            playerTarget.position);
 
-        yield return new WaitForSeconds(0.2f);
-
-        // VOLVER AL JUGADOR
-
-        agent.isStopped = false;
-
-        agent.stoppingDistance =
-            bringBallStopDistance;
-
-        agent.SetDestination(playerTarget.position);
-
-        while (agent.pathPending ||
-               agent.remainingDistance >
-               agent.stoppingDistance)
+        while(
+            agent.pathPending ||
+            agent.remainingDistance>
+            bringBallStopDistance)
         {
             yield return null;
         }
 
-        agent.ResetPath();
-        agent.isStopped = true;
+        carryingBall=false;
 
-        animator.SetBool("run", false);
-        animator.SetBool("walking", false);
+        ball.position=
+            playerTarget.position+
+            playerTarget.forward;
 
-        // SOLTAR PELOTA
-
-        carryingBall = false;
-
-        Vector3 dropPosition =
-            playerTarget.position +
-            playerTarget.forward * 1.0f;
-
-        dropPosition.y =
-            playerTarget.position.y + 0.3f;
-
-        ball.position = dropPosition;
-
-        // REACTIVAR FÍSICA
-
-        if (ballCollider != null)
+        if(ballCollider!=null)
         {
-            ballCollider.enabled = true;
+            ballCollider.enabled=true;
         }
 
-        if (ballRb != null)
+        if(ballRb!=null)
         {
-            ballRb.isKinematic = false;
-            ballRb.useGravity = true;
-
-            ballRb.linearVelocity = Vector3.zero;
-            ballRb.angularVelocity = Vector3.zero;
+            ballRb.isKinematic=false;
         }
 
-        // MIRAR AL JUGADOR
+        animator.SetBool(
+            "run",
+            false);
 
-        float timer = 0f;
-
-        while (timer < lookAtPlayerTime)
-        {
-            LookAtPlayer();
-
-            timer += Time.deltaTime;
-
-            yield return null;
-        }
-
-        agent.isStopped = false;
-        agent.stoppingDistance = 0.3f;
-
-        comingToPlayer = false;
+        comingToPlayer=false;
     }
 
     void CreatePoop()
     {
-        if (poopPrefab == null)
+        if(poopPrefab==null)
             return;
 
-        Vector3 poopPosition =
-            transform.position -
-            transform.forward * 0.4f;
+        Vector3 position=
+            transform.position-
+            transform.forward*0.4f;
 
-        poopPosition.y = transform.position.y;
-
-        GameObject poop =
+        GameObject poop=
             Instantiate(
                 poopPrefab,
-                poopPosition,
+                position,
                 Quaternion.identity);
 
-        // ASIGNAR REFERENCIA AL PERRO
+        PoopBehaviour pb=
+            poop.GetComponent<
+                PoopBehaviour>();
 
-        PoopBehaviour poopBehaviour =
-            poop.GetComponent<PoopBehaviour>();
-
-        if (poopBehaviour != null)
+        if(pb!=null)
         {
-            poopBehaviour.dog = this;
+            pb.dog=this;
         }
 
         currentPoops++;
@@ -412,18 +387,19 @@ public class DogParkAI : MonoBehaviour
         GameObject poop,
         float time)
     {
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSeconds(
+            time);
 
-        if (poop != null)
+        if(poop!=null)
         {
             Destroy(poop);
 
             currentPoops--;
 
-            if (currentPoops < 0)
-            {
-                currentPoops = 0;
-            }
+            currentPoops=
+                Mathf.Max(
+                    currentPoops,
+                    0);
         }
     }
 
@@ -431,95 +407,48 @@ public class DogParkAI : MonoBehaviour
     {
         currentPoops--;
 
-        if (currentPoops < 0)
-        {
-            currentPoops = 0;
-        }
+        currentPoops=
+            Mathf.Max(
+                currentPoops,
+                0);
     }
 
     void UpdateBallCarry()
     {
-        if (!carryingBall)
+        if(!carryingBall)
             return;
 
-        if (ball == null || mouthPoint == null)
+        if(ball==null ||
+           mouthPoint==null)
             return;
 
-        // CLAVAR pelota EXACTAMENTE
-        // en MouthPoint
+        ball.position=
+            mouthPoint.position;
 
-        ball.position = mouthPoint.position;
-        ball.rotation = mouthPoint.rotation;
-    }
-
-    void LookAtPlayer()
-    {
-        if (playerTarget == null)
-            return;
-
-        Vector3 direction =
-            playerTarget.position -
-            transform.position;
-
-        direction.y = 0f;
-
-        if (direction != Vector3.zero)
-        {
-            transform.rotation =
-                Quaternion.LookRotation(direction);
-        }
+        ball.rotation=
+            mouthPoint.rotation;
     }
 
     Vector3 GetRandomNavMeshPoint(
         Vector3 center,
         float radius)
     {
-        for (int i = 0; i < 30; i++)
-        {
-            Vector3 randomPoint =
-                center +
-                Random.insideUnitSphere * radius;
+        Vector3 random=
+            center+
+            Random.insideUnitSphere*
+            radius;
 
-            randomPoint.y = center.y;
+        NavMesh.SamplePosition(
+            random,
+            out NavMeshHit hit,
+            radius,
+            NavMesh.AllAreas);
 
-            if (NavMesh.SamplePosition(
-                    randomPoint,
-                    out NavMeshHit hit,
-                    radius,
-                    NavMesh.AllAreas))
-            {
-                return hit.position;
-            }
-        }
-
-        return center;
+        return hit.position;
     }
 
     void LateUpdate()
     {
-        // ACTUALIZAR PELOTA CADA FRAME
-
         UpdateBallCarry();
-
-        // Mientras mira al jugador,
-        // no auto-rotamos con navegación.
-
-        if (comingToPlayer)
-            return;
-
-        if (agent != null &&
-            agent.velocity.sqrMagnitude > 0.01f)
-        {
-            Vector3 direction =
-                agent.velocity.normalized;
-
-            direction.y = 0f;
-
-            if (direction != Vector3.zero)
-            {
-                transform.rotation =
-                    Quaternion.LookRotation(direction);
-            }
-        }
     }
 }
