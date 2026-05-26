@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class OptionsController : MonoBehaviour
 {
@@ -78,6 +79,11 @@ public class OptionsController : MonoBehaviour
     }
 
     public void PlayClick()
+    {
+        clip.Play();
+    }
+
+    public void ToggleSound(bool isOn) 
     {
         clip.Play();
     }
