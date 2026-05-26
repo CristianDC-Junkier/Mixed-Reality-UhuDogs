@@ -7,7 +7,7 @@ public class MainMenuController : MonoBehaviour
 {
     public AudioSource clip;
 
-    [Header("Transición oscura")]
+    /*[Header("Transición oscura")]
     public Image darkScreen;
 
     [Header("Audio")]
@@ -17,17 +17,17 @@ public class MainMenuController : MonoBehaviour
 
     [Header("Escena a cambiar")]
     public Object nextScene; // Esto puede fallar al compilar el juego entero, sería mejor usar un string con el nombre de la escena
-
+    
     void Start()
     {
         if (darkScreen != null) darkScreen.color = new Color(0, 0, 0, 0);
-    }
+    }*/
 
     public void PlayClick()
     {
         clip.Play();
     }
-
+    /*
     public void ContinueGame()
     {
         StartCoroutine(ChangeTransition()); // Arrancamos la transición
@@ -86,5 +86,5 @@ public class MainMenuController : MonoBehaviour
         yield return new WaitForSeconds(doorSound.length);
 
         Application.Quit();
-    }
+    }*/
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
+using System.Collections;
 
 public class OptionsController : MonoBehaviour
 {
@@ -12,10 +12,11 @@ public class OptionsController : MonoBehaviour
     public float valueVolume;
     public float valueBrightness;
     public float defaultVolume = 0.5f;
-    public float defaultBrightness = 0.37f;
+    public float defaultBrightness = 0.45f;
     private float lastVolume;
-    
+
     public AudioSource clip;
+    public AudioClip clickSound;
 
     // Start is called before the first frame update
     void Start()
@@ -49,12 +50,25 @@ public class OptionsController : MonoBehaviour
 
     public void OnToggleSound(bool isMuted)
     {
+        StartCoroutine(ToggleCoroutine(isMuted));
+    }
+
+    private IEnumerator ToggleCoroutine(bool isMuted)
+    {
+        if (!isMuted)
+        {
+            valueVolume = lastVolume;
+            AudioListener.volume = valueVolume;
+        }
+
+        clip.Play();
+        yield return new WaitForSeconds(clip.clip.length);
+
         if (isMuted)
         {
             lastVolume = valueVolume;
             valueVolume = 0f;
         }
-        else valueVolume = lastVolume;
 
         AudioListener.volume = valueVolume;
         sliderVolume.value = valueVolume;
@@ -79,11 +93,6 @@ public class OptionsController : MonoBehaviour
     }
 
     public void PlayClick()
-    {
-        clip.Play();
-    }
-
-    public void ToggleSound(bool isOn) 
     {
         clip.Play();
     }
