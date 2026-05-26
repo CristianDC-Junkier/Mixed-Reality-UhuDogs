@@ -5,6 +5,8 @@ using System.Collections;
 
 public class PauseMenuController : MonoBehaviour
 {
+    public AudioSource clip;
+
     [Header("Transición oscura")]
     public Image darkScreen;
 
@@ -26,6 +28,10 @@ public class PauseMenuController : MonoBehaviour
         if (darkScreen != null) darkScreen.color = new Color(0, 0, 0, 0);
     }
 
+    public void PlayClick()
+    {
+        clip.Play();
+    }
 
     public void ResumeGame()
     {
