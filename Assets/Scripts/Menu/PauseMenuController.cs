@@ -57,6 +57,8 @@ public class PauseMenuController : MonoBehaviour
 
     IEnumerator Quitransition()
     {
+        pauseMenu.SetActive(false);
+
         float tiempo = 0;
         float duracionFade = 1.5f;
 

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8158007394000614918}
   - component: {fileID: 5467392877498343510}
   - component: {fileID: 1094545269594642041}
+  - component: {fileID: 6033242684108802844}
   m_Layer: 5
   m_Name: OptionsButton
   m_TagString: Untagged
@@ -157,6 +158,22 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6033242684108802844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 48227133538967246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c299ae57f5e2fc84a842a200d635b8f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PauseController
+  buttonText: {fileID: 5133439216123037019}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  hoverColor: {r: 0.7372549, g: 1, b: 0.19215688, a: 1}
+  clickColor: {r: 0.427451, g: 0.9803922, b: 0.27450982, a: 1}
 --- !u!1 &77452506510663920
 GameObject:
   m_ObjectHideFlags: 0
@@ -967,7 +984,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4383666508832597663
 Transform:
   m_ObjectHideFlags: 0
@@ -1909,8 +1926,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2534,8 +2551,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2902,8 +2919,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3407,6 +3424,7 @@ GameObject:
   - component: {fileID: 2441166284501159777}
   - component: {fileID: 595747387983186559}
   - component: {fileID: 7765198113848667540}
+  - component: {fileID: 7804155544143960759}
   m_Layer: 5
   m_Name: StartButton
   m_TagString: Untagged
@@ -3540,6 +3558,22 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7804155544143960759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7100783926175750682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c299ae57f5e2fc84a842a200d635b8f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PauseController
+  buttonText: {fileID: 7729598770680347969}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  hoverColor: {r: 0.7372549, g: 1, b: 0.19215688, a: 1}
+  clickColor: {r: 0.427451, g: 0.9803922, b: 0.27450982, a: 1}
 --- !u!1 &7243617471080922244
 GameObject:
   m_ObjectHideFlags: 0
@@ -4467,6 +4501,7 @@ GameObject:
   - component: {fileID: 8875210084478311626}
   - component: {fileID: 2069148733751832378}
   - component: {fileID: 6743818375541645665}
+  - component: {fileID: 4793804503890665078}
   m_Layer: 5
   m_Name: ExitButton
   m_TagString: Untagged
@@ -4600,3 +4635,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4793804503890665078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9043906639160179815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c299ae57f5e2fc84a842a200d635b8f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PauseController
+  buttonText: {fileID: 7124102319840803548}
+  normalColor: {r: 1, g: 0.2392157, b: 0.2392157, a: 1}
+  hoverColor: {r: 1, g: 0.627451, b: 0.34509805, a: 1}
+  clickColor: {r: 0.7058824, g: 0.15686275, b: 0.15686275, a: 1}
