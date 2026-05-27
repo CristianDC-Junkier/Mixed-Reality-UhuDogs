@@ -11827,7 +11827,7 @@ MonoBehaviour:
   valueVolume: 0
   valueBrightness: 0
   defaultVolume: 0.5
-  defaultBrightness: 0.37
+  defaultBrightness: 0.45
   clip: {fileID: 1197818961}
   clickSound: {fileID: 8300000, guid: d77d5c56fd1abc64a9d48c068c9e716c, type: 3}
 --- !u!1 &213379705
@@ -14363,6 +14363,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuController
   clip: {fileID: 330812611}
+  darkScreen: {fileID: 0}
+  audioSource: {fileID: 0}
+  windowsOff: {fileID: 0}
+  doorSound: {fileID: 0}
+  nextScene: {fileID: 0}
 --- !u!1 &260997136
 GameObject:
   m_ObjectHideFlags: 0
@@ -16326,6 +16331,7 @@ GameObject:
   - component: {fileID: 287659004}
   - component: {fileID: 287659003}
   - component: {fileID: 287659002}
+  - component: {fileID: 287659005}
   m_Layer: 5
   m_Name: ExitButton
   m_TagString: Untagged
@@ -16447,6 +16453,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 287658999}
   m_CullTransparentMesh: 1
+--- !u!114 &287659005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 287658999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c299ae57f5e2fc84a842a200d635b8f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PauseController
+  buttonText: {fileID: 509975219}
+  normalColor: {r: 1, g: 0.23921569, b: 0.23921569, a: 1}
+  hoverColor: {r: 1, g: 0.6278286, b: 0.3443396, a: 1}
+  clickColor: {r: 0.7075472, g: 0.15686187, b: 0.15686187, a: 1}
 --- !u!1 &287897397
 GameObject:
   m_ObjectHideFlags: 0
@@ -31438,6 +31460,7 @@ GameObject:
   - component: {fileID: 627738579}
   - component: {fileID: 627738578}
   - component: {fileID: 627738577}
+  - component: {fileID: 627738580}
   m_Layer: 5
   m_Name: StartButton
   m_TagString: Untagged
@@ -31559,6 +31582,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 627738574}
   m_CullTransparentMesh: 1
+--- !u!114 &627738580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 627738574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c299ae57f5e2fc84a842a200d635b8f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PauseController
+  buttonText: {fileID: 510379297}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  hoverColor: {r: 0.7370132, g: 1, b: 0.19339621, a: 1}
+  clickColor: {r: 0.4288288, g: 0.9811321, b: 0.27305093, a: 1}
 --- !u!1 &628544990
 GameObject:
   m_ObjectHideFlags: 0
@@ -38275,6 +38314,7 @@ GameObject:
   - component: {fileID: 753496614}
   - component: {fileID: 753496613}
   - component: {fileID: 753496612}
+  - component: {fileID: 753496615}
   m_Layer: 5
   m_Name: OptionsButton
   m_TagString: Untagged
@@ -38420,6 +38460,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 753496609}
   m_CullTransparentMesh: 1
+--- !u!114 &753496615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 753496609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c299ae57f5e2fc84a842a200d635b8f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PauseController
+  buttonText: {fileID: 128445843}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  hoverColor: {r: 0.7370132, g: 1, b: 0.19339621, a: 1}
+  clickColor: {r: 0.4288288, g: 0.9811321, b: 0.27305093, a: 1}
 --- !u!1 &755152803
 GameObject:
   m_ObjectHideFlags: 0
@@ -46405,6 +46461,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuController
   clip: {fileID: 1197818961}
+  darkScreen: {fileID: 0}
+  audioSource: {fileID: 0}
+  windowsOff: {fileID: 0}
+  doorSound: {fileID: 0}
+  nextScene: {fileID: 0}
 --- !u!1 &893580549
 GameObject:
   m_ObjectHideFlags: 0
