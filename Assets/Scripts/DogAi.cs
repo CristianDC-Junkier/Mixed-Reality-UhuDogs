@@ -10,9 +10,16 @@ public class DogAI : MonoBehaviour
     [Header("Comida")]
     public GameObject foodObjectToHide;
 
+    [Header("Bebida")]
+    public GameObject waterObjectToHide;
+
     [Header("Posición exacta comida")]
     public Vector3 eatWorldPosition;
     public float eatRotationY = 0f;
+
+    [Header("Posición exacta bebida")]
+    public Vector3 waterWorldPosition;
+    public float waterRotationY = 0f;
 
     [Header("Hambre")]
     [Range(1,100)]
@@ -25,6 +32,18 @@ public class DogAI : MonoBehaviour
 
     public float hungerTickAbove50 = 5f;
     public float hungerTickBelow50 = 10f;
+
+    [Header("Sed")]
+    [Range(1, 100)]
+    public int thirst = 20;
+
+    public int thirstThreshold = 40;
+    public int fullAfterDrink = 100;
+
+    public float drinkAnimationDuration = 3.5f;
+
+    public float drinkTickAbove50 = 5f;
+    public float drinkTickBelow50 = 10f;
 
     [Header("Movimiento")]
     public float wanderRadius = 4f;
@@ -41,6 +60,7 @@ public class DogAI : MonoBehaviour
     private NavMeshAgent agent;
 
     private bool isEating;
+    private bool isDrinking;
     private bool isBarking;
 
     private float nextBarkTime;
@@ -58,6 +78,9 @@ public class DogAI : MonoBehaviour
 
         StartCoroutine(
             HungerRoutine());
+
+        StartCoroutine(
+            ThirstRoutine());
 
         StartCoroutine(
             MainRoutine());
@@ -88,21 +111,52 @@ public class DogAI : MonoBehaviour
         }
     }
 
+    IEnumerator ThirstRoutine()
+    {
+        while (true)
+        {
+            float waitTime =
+                thirst > 50
+                ? drinkTickAbove50
+                : drinkTickBelow50;
+
+            yield return new WaitForSeconds(
+                waitTime);
+
+            if (!isDrinking)
+            {
+                thirst--;
+
+                thirst =
+                    Mathf.Clamp(
+                        thirst,
+                        1,
+                        100);
+            }
+        }
+    }
+
     IEnumerator MainRoutine()
     {
         while(true)
         {
-            if(!isEating &&
-               hunger < hungryThreshold)
+            if (!isEating &&
+                hunger < hungryThreshold)
             {
                 yield return GoEat();
+            }
+            else if (!isDrinking &&
+                    thirst < thirstThreshold)
+            {
+                yield return GoDrink();
             }
             else
             {
                 yield return WanderForAWhile();
             }
 
-            if(!isEating &&
+            if (!isEating &&
+               !isDrinking &&
                !isBarking &&
                Time.time >= nextBarkTime)
             {
@@ -244,6 +298,94 @@ public class DogAI : MonoBehaviour
         agent.isStopped=false;
 
         isEating=false;
+    }
+
+    IEnumerator GoDrink()
+    {
+        if (bowlTarget == null ||
+           isDrinking)
+        {
+            yield break;
+        }
+
+        isDrinking = true;
+
+        agent.isStopped = false;
+
+        agent.SetDestination(
+            bowlTarget.position);
+
+        animator.SetBool(
+            "walking",
+            true);
+
+        while (agent.pathPending ||
+              agent.remainingDistance >
+              agent.stoppingDistance + 0.1f)
+        {
+            yield return null;
+        }
+
+        agent.ResetPath();
+
+        agent.isStopped = true;
+
+        animator.SetBool(
+            "walking",
+            false);
+
+        // TELETRANSPORTE
+
+        agent.enabled = false;
+
+        transform.position =
+            waterWorldPosition;
+
+        transform.rotation =
+            Quaternion.Euler(
+                0f,
+                waterRotationY,
+                0f);
+
+        agent.enabled = true;
+
+        agent.Warp(
+            waterWorldPosition);
+
+        agent.isStopped = true;
+
+        // ACTIVAR COMER (TRIGGER)
+
+        animator.SetTrigger(
+            "eating");
+
+        // ESPERAR ANIMACIÓN ENTERA
+
+        yield return new WaitForSeconds(
+            drinkAnimationDuration);
+
+        // ESCONDER COMIDA
+
+        if (waterObjectToHide != null)
+        {
+            waterObjectToHide.SetActive(
+                false);
+        }
+
+        // SUBIR HAMBRE
+
+        thirst =
+            Mathf.Clamp(
+                fullAfterDrink,
+                1,
+                100);
+
+        yield return new WaitForSeconds(
+            0.2f);
+
+        agent.isStopped = false;
+
+        isDrinking = false;
     }
 
     IEnumerator BarkRoutine()

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - trashbin
   - foodbowl
+  - waterbowl
   layers:
   - Default
   - TransparentFX
