@@ -79,11 +79,13 @@ public class OutsideSequence : MonoBehaviour
             audioSource.Stop();
             audioSource.clip = doorSound;
             audioSource.Play();
-            Debug.Log("Reproduciendo sonido de puerta...");
             yield return new WaitForSeconds(doorSound.length);
         }
 
-        Debug.Log("Cargando escena final...");
+        int walks = PlayerPrefs.GetInt("nWalks", 0) + 1;
+        PlayerPrefs.SetInt("nWalks", walks);
+        PlayerPrefs.Save();
+
         SceneManager.LoadScene(sceneName);
     }
 }

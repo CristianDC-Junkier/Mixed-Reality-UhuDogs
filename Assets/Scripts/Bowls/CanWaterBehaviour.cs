@@ -18,6 +18,11 @@ public class CanWaterBehaviour : MonoBehaviour
     private void Start()
     {
         // Guardamos la posición inicial de esta instancia
+
+        if(PlayerPrefs.GetInt("water", 1) < 1){
+            waterObjectToShow.SetActive(false);
+        }
+
         initialPosition = transform.position;
         initialRotation = transform.rotation;
     }
@@ -35,6 +40,9 @@ public class CanWaterBehaviour : MonoBehaviour
             {
                 waterObjectToShow.SetActive(true);
             }
+
+            PlayerPrefs.SetInt("water", 1);
+            PlayerPrefs.Save();
 
             // 1. Creamos una copia nueva en el lugar original
             if (bottlePrefab != null)

@@ -15,6 +15,10 @@ public class PoopBehaviour : MonoBehaviour
         {
             destroyed = true;
 
+            int poops = PlayerPrefs.GetInt("nPoops", 0) + 1;
+            PlayerPrefs.SetInt("nPoops", poops);
+            PlayerPrefs.Save();
+
             if (dog != null)
             {
                 dog.RemovePoopFromCount();

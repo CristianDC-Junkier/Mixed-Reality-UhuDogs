@@ -17,6 +17,11 @@ public class CanFoodBehaviour : MonoBehaviour
 
     private void Start()
     {
+        if (PlayerPrefs.GetInt("food", 1) < 1)
+        {
+            foodObjectToShow.SetActive(false);
+        }
+
         // Guardamos la posición inicial de esta instancia
         initialPosition = transform.position;
         initialRotation = transform.rotation;
@@ -35,6 +40,11 @@ public class CanFoodBehaviour : MonoBehaviour
             {
                 foodObjectToShow.SetActive(true);
             }
+
+            PlayerPrefs.SetInt("food", 1);
+            int feeds = PlayerPrefs.GetInt("nFeeds", 0) + 1;
+            PlayerPrefs.SetInt("nFeeds", feeds);
+            PlayerPrefs.Save();
 
             // 1. Creamos una copia nueva en el lugar original
             if (canPrefab != null)
