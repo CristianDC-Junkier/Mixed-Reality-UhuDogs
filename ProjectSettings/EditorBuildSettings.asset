@@ -6,20 +6,20 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/EscenaInicial.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Scenes/Game/InitialScene.unity
+    guid: 07e33a2c28b37f746b2b3dc9e5fc1b70
   - enabled: 1
     path: Assets/Scenes/Game/HouseScene.unity
-    guid: 21c0c3c2eb71be447923b378a3a2a8b1
-  - enabled: 0
-    path: "Assets/Scenes/\xC1lvaro.unity"
-    guid: 0cca0d93450733b4e9dc12b309f7d6ba
-  - enabled: 0
-    path: Assets/Scenes/Daniel.unity
-    guid: 38ea26ac71f4279478bcdd40aa68a0cd
-  - enabled: 0
-    path: "Assets/Scenes/Tom\xE1s.unity"
-    guid: dde4bde839464f6468c01e4b78cc60ca
+    guid: 6a45762de8833ba43b7e942c97d61174
+  - enabled: 1
+    path: Assets/Scenes/Game/MenuScene.unity
+    guid: a07d0ad56ed5d2f41929c2ff0ba0c4a9
+  - enabled: 1
+    path: Assets/Scenes/Game/ParkScene.unity
+    guid: a0c5c6a9d2fe9034a8347e366c8a08eb
+  - enabled: 1
+    path: Assets/Scenes/Game/RMixScene.unity
+    guid: 39ab18bc336354646bd4e7e1d89b0d32
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: e88920d779d56d64b9572e1a12b69d04, type: 2}

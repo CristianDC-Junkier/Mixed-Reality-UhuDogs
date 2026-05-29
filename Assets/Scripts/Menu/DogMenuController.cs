@@ -12,12 +12,12 @@ public class DogMenuController : MonoBehaviour
     public TMP_Text nEnergy;
     public TMP_Text nHunger;
     public TMP_Text nThirst;
-    public TMP_Text nSleep;
+    public TMP_Text nBath;
 
     public Image barEnergy;
     public Image barHunger;
     public Image barThirst;
-    public Image barSleep;
+    public Image barBath;
 
     public AudioSource clip;
 
@@ -28,16 +28,16 @@ public class DogMenuController : MonoBehaviour
         savedText.text = "";
 
         // Percentages
-        int energy = PlayerPrefs.GetInt("energy", 100);
+        int energy = PlayerPrefs.GetInt("energy", 0);
         int hunger = PlayerPrefs.GetInt("hunger", 0);
         int thirst = PlayerPrefs.GetInt("thirst", 0);
-        int sleep = PlayerPrefs.GetInt("sleep", 0);
+        int bath = PlayerPrefs.GetInt("bath", 0);
 
         // Update stats
         UpdateStat(energy, nEnergy, barEnergy);
         UpdateStat(hunger, nHunger, barHunger);
         UpdateStat(thirst, nThirst, barThirst);
-        UpdateStat(sleep, nSleep, barSleep);
+        UpdateStat(bath, nBath, barBath);
     }
 
     private void UpdateStat(int value, TMP_Text text, Image bar)

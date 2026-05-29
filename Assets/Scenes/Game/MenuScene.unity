@@ -3644,7 +3644,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &421377844
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5803,11 +5803,11 @@ MonoBehaviour:
   nEnergy: {fileID: 1171552126}
   nHunger: {fileID: 1350222544}
   nThirst: {fileID: 264190598}
-  nSleep: {fileID: 1146945692}
+  nBath: {fileID: 0}
   barEnergy: {fileID: 1734237354}
   barHunger: {fileID: 1602229087}
   barThirst: {fileID: 1156705039}
-  barSleep: {fileID: 719398970}
+  barBath: {fileID: 0}
   clip: {fileID: 1164644120}
 --- !u!1 &553076847
 GameObject:
@@ -12340,7 +12340,7 @@ Camera:
   m_GameObject: {fileID: 1079669091}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -14485,7 +14485,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1241162986}
   m_Layer: 5
-  m_Name: SleepBar
+  m_Name: BathBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

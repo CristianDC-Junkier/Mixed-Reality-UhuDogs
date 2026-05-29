@@ -33,8 +33,19 @@ public class PauseMenuController : MonoBehaviour
         clip.Play();
     }
 
-    public void ResumeGame()
+   public void ResumeGame()
     {
+        StartCoroutine(ResumeGameRoutine());
+    }
+
+    IEnumerator ResumeGameRoutine()
+    {
+        if (clip != null)
+        {
+            clip.Play();
+            yield return new WaitForSecondsRealtime(clip.clip.length);
+        }
+
         Time.timeScale = 1f;
 
         if (playerRigidbody != null)

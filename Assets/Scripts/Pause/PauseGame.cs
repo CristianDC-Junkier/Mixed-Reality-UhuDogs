@@ -56,7 +56,6 @@ public class PauseGame : MonoBehaviour
 
     void Resume()
     {
-
         Time.timeScale = 1f;
 
         if (playerRigidbody != null)
@@ -69,6 +68,19 @@ public class PauseGame : MonoBehaviour
         if (firstPersonLocomotor != null)
             firstPersonLocomotor.enabled = true;
 
+        ResetPanels();
         pauseMenu.SetActive(false);
+    }
+
+    void ResetPanels()
+    {
+        if (pauseMenu != null)
+        {
+            Transform main = pauseMenu.transform.Find("CanvasPause/MainPanel");
+            Transform options = pauseMenu.transform.Find("CanvasPause/OptionsPanel");
+
+            if (main != null) main.gameObject.SetActive(true);
+            if (options != null) options.gameObject.SetActive(false);
+        }
     }
 }
