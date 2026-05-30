@@ -23,4 +23,4 @@
 ### Instalación
 1. Clona este repositorio:
    ```bash
-   git clone [https://github.com/CristianDC-Junkier/UhuDogs.git](https://github.com/CristianDC-Junkier/UhuDogs.git)
+   git clone https://github.com/CristianDC-Junkier/UhuDogs.git
