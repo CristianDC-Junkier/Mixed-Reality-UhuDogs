@@ -7,6 +7,8 @@ public class OptionsController : MonoBehaviour
     public Slider sliderVolume;
     public Slider sliderBrightness;
     public Toggle toggleMute;
+    public Toggle toggleMale;
+    public Toggle toggleFemale;
     public Image panelBrightness;
 
     public float valueVolume;
@@ -31,6 +33,11 @@ public class OptionsController : MonoBehaviour
         valueBrightness = PlayerPrefs.GetFloat("brightness", defaultBrightness);
         sliderBrightness.value = valueBrightness;
         panelBrightness.color = new Color(panelBrightness.color.r, panelBrightness.color.g, panelBrightness.color.b, valueBrightness);
+
+        // Gender
+        int gender = PlayerPrefs.GetInt("gender", 0);
+        toggleMale.isOn = (gender == 0);
+        toggleFemale.isOn = (gender == 1);
     }
 
     public void ChangeVolume(float value)
@@ -75,6 +82,16 @@ public class OptionsController : MonoBehaviour
         PlayerPrefs.SetFloat("volume", valueVolume);
     }
 
+    public void SetMale()
+    {
+        PlayerPrefs.SetInt("gender", 0);
+    }
+
+    public void SetFemale()
+    {
+        PlayerPrefs.SetInt("gender", 1);
+    }
+
     public void ResetOptions()
     {
         //Volume
@@ -90,6 +107,11 @@ public class OptionsController : MonoBehaviour
         sliderBrightness.value = defaultBrightness;
         valueBrightness = defaultBrightness;
         PlayerPrefs.SetFloat("brightness", defaultBrightness);
+
+        // Gender
+        toggleMale.isOn = true;
+        toggleFemale.isOn = false;
+        PlayerPrefs.SetInt("gender", 0);
     }
 
     public void PlayClick()
