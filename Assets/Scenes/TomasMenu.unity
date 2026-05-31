@@ -6395,7 +6395,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 043d44c4d4dde7241a7e71cc03e0969b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e06d8cfe74c774a41974f92cfbe7e68a, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -14958,7 +14958,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   windowsOff: {fileID: 0}
   doorSound: {fileID: 0}
-  nextScene: {fileID: 0}
+  nextSceneName: 
 --- !u!1 &260997136
 GameObject:
   m_ObjectHideFlags: 0
@@ -23959,7 +23959,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a8cff7744fba409408f748531b683e07, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d2b651f7eeedc6a49a75d024318a2e8d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -25939,10 +25939,10 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 21300000, guid: a8cff7744fba409408f748531b683e07, type: 3}
-    m_PressedSprite: {fileID: 21300000, guid: a8cff7744fba409408f748531b683e07, type: 3}
-    m_SelectedSprite: {fileID: 21300000, guid: 41eeb2b12191c674b913345a679d36e0, type: 3}
-    m_DisabledSprite: {fileID: 21300000, guid: 9054a615669a289488e632b7946c71d2, type: 3}
+    m_HighlightedSprite: {fileID: 21300000, guid: d2b651f7eeedc6a49a75d024318a2e8d, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: d2b651f7eeedc6a49a75d024318a2e8d, type: 3}
+    m_SelectedSprite: {fileID: 21300000, guid: 59387969a42275744a7034e7b5ac7abf, type: 3}
+    m_DisabledSprite: {fileID: 21300000, guid: 691446f6f66065742aac5f9247817969, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -27461,7 +27461,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a8cff7744fba409408f748531b683e07, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d2b651f7eeedc6a49a75d024318a2e8d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -47853,7 +47853,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   windowsOff: {fileID: 0}
   doorSound: {fileID: 0}
-  nextScene: {fileID: 0}
+  nextSceneName: 
 --- !u!1 &893580549
 GameObject:
   m_ObjectHideFlags: 0
@@ -66012,7 +66012,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 071db4d0a4fba284b89247c1be047242, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5d0b695305616c740a3c6f6f1fab05a7, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -85454,10 +85454,10 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 21300000, guid: a8cff7744fba409408f748531b683e07, type: 3}
-    m_PressedSprite: {fileID: 21300000, guid: a8cff7744fba409408f748531b683e07, type: 3}
-    m_SelectedSprite: {fileID: 21300000, guid: 41eeb2b12191c674b913345a679d36e0, type: 3}
-    m_DisabledSprite: {fileID: 21300000, guid: 9054a615669a289488e632b7946c71d2, type: 3}
+    m_HighlightedSprite: {fileID: 21300000, guid: d2b651f7eeedc6a49a75d024318a2e8d, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: d2b651f7eeedc6a49a75d024318a2e8d, type: 3}
+    m_SelectedSprite: {fileID: 21300000, guid: 59387969a42275744a7034e7b5ac7abf, type: 3}
+    m_DisabledSprite: {fileID: 21300000, guid: 691446f6f66065742aac5f9247817969, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
