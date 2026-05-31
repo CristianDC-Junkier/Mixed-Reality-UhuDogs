@@ -16,19 +16,19 @@ public class DogParkAI : MonoBehaviour
 
     [Header("Hambre")]
     [Range(1, 100)] public int hunger = 100;
-    public int hungryThreshold = 40;
+    public int hungryThreshold = 20;
     public float hungerTickAbove50 = 5f;
     public float hungerTickBelow50 = 10f;
 
     [Header("Sed")]
     [Range(1, 100)] public int thirst = 100;
-    public int thirstThreshold = 40;
+    public int thirstThreshold = 20;
     public float drinkTickAbove50 = 5f;
     public float drinkTickBelow50 = 10f;
 
     [Header("Energía")]
     [Range(1, 100)] public int energy = 100;
-    public int sleepThreshold = 40;
+    public int sleepThreshold = 20;
     public float energyTickAbove50 = 5f;
     public float energyTickBelow50 = 10f;
 
@@ -313,8 +313,7 @@ public class DogParkAI : MonoBehaviour
 
         if (poopPrefab != null)
         {
-            Vector3 poopPosition = transform.position - transform.forward * 0.4f;
-            poopPosition.y -= 0.2f;
+            Vector3 poopPosition = transform.position - transform.forward * 1.25f;
             GameObject poop = Instantiate(poopPrefab, poopPosition, Quaternion.identity);
 
             PoopBehaviour pb = poop.GetComponent<PoopBehaviour>();
@@ -353,6 +352,10 @@ public class DogParkAI : MonoBehaviour
         float barkTimer = 0f;
         float pathUpdateInterval = 0.3f;
         float nextPathUpdateTime = 0f;
+
+        animator.SetBool("walking", false);
+        animator.SetBool("run", true);
+        yield return new WaitForSeconds(1.75f);
 
         while (HasUrgentNeeds())
         {

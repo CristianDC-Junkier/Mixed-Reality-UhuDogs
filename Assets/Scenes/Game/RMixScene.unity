@@ -348,15 +348,15 @@ MonoBehaviour:
   ballStopDistance: 2
   bringBallStopDistance: 4
   hunger: 100
-  hungryThreshold: 40
+  hungryThreshold: 20
   hungerTickAbove50: 5
   hungerTickBelow50: 10
   thirst: 100
-  thirstThreshold: 40
+  thirstThreshold: 20
   drinkTickAbove50: 5
   drinkTickBelow50: 10
   energy: 100
-  sleepThreshold: 40
+  sleepThreshold: 20
   energyTickAbove50: 5
   energyTickBelow50: 10
   bath: 100

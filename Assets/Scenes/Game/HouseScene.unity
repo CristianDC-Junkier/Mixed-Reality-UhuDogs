@@ -99399,7 +99399,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2948371117856665455, guid: 62270840728a9f842ac7dcf2dc6f2b4f, type: 3}
       propertyPath: energy
-      value: 28
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2948371117856665455, guid: 62270840728a9f842ac7dcf2dc6f2b4f, type: 3}
       propertyPath: hunger
@@ -99462,12 +99462,24 @@ PrefabInstance:
       value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 2948371117856665455, guid: 62270840728a9f842ac7dcf2dc6f2b4f, type: 3}
+      propertyPath: sleepThreshold
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2948371117856665455, guid: 62270840728a9f842ac7dcf2dc6f2b4f, type: 3}
       propertyPath: waterRotationY
       value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 2948371117856665455, guid: 62270840728a9f842ac7dcf2dc6f2b4f, type: 3}
       propertyPath: fullAfterEating
       value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 2948371117856665455, guid: 62270840728a9f842ac7dcf2dc6f2b4f, type: 3}
+      propertyPath: hungryThreshold
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2948371117856665455, guid: 62270840728a9f842ac7dcf2dc6f2b4f, type: 3}
+      propertyPath: thirstThreshold
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2948371117856665455, guid: 62270840728a9f842ac7dcf2dc6f2b4f, type: 3}
       propertyPath: drinkTickAbove50

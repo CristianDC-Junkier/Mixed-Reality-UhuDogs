@@ -30,7 +30,7 @@ public class DogAI : MonoBehaviour
 
     [Header("Hambre")]
     [Range(1, 100)] public int hunger = 100;
-    public int hungryThreshold = 40;
+    public int hungryThreshold = 20;
     public int fullAfterEating = 100;
     public float eatAnimationDuration = 3.5f;
     public float hungerTickAbove50 = 5f;
@@ -38,7 +38,7 @@ public class DogAI : MonoBehaviour
 
     [Header("Sed")]
     [Range(1, 100)] public int thirst = 100;
-    public int thirstThreshold = 40;
+    public int thirstThreshold = 20;
     public int fullAfterDrink = 100;
     public float drinkAnimationDuration = 3.5f;
     public float drinkTickAbove50 = 5f;
@@ -46,7 +46,7 @@ public class DogAI : MonoBehaviour
 
     [Header("Energía")]
     [Range(1, 100)] public int energy = 100;
-    public int sleepThreshold = 40;
+    public int sleepThreshold = 20;
     public int fullAfterSleep = 100;
     public float sleepAnimationDuration = 20f;
     public float energyTickAbove50 = 5f;
@@ -376,6 +376,10 @@ public class DogAI : MonoBehaviour
         float barkTimer = 0f;
         float pathUpdateInterval = 0.3f;
         float nextPathUpdateTime = 0f;
+
+        animator.SetBool("walking", false);
+        animator.SetBool("run", true);
+        yield return new WaitForSeconds(1.75f);
 
         while (bath < bathThreshold ||
               (hunger < hungryThreshold && food == 0) ||
