@@ -13,6 +13,24 @@ public class DogParkAI : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip barkSound;
 
+    [Header("Necesidades")]
+    [Range(1, 100)] public int hunger = 100;
+    [Range(1, 100)] public int thirst = 100;
+
+    public int hungryThreshold = 40;
+    public int thirstThreshold = 40;
+
+    public float hungerTickAbove50 = 5f;
+    public float hungerTickBelow50 = 10f;
+
+    public float thirstTickAbove50 = 5f;
+    public float thirstTickBelow50 = 10f;
+
+    [Header("Seguir jugador por necesidad")]
+    public float needStopDistance = 3f;
+    public float needBarkRepeatTime = 2f;
+    public float needPathUpdateInterval = 0.3f;
+
     [Header("Pelota")]
     public float minBallDistanceFromPlayer = 3f;
     public float ballStopDistance = 2f;
@@ -45,6 +63,7 @@ public class DogParkAI : MonoBehaviour
     private bool comingToPlayer;
     private bool carryingBall;
     private bool isBarking;
+    private bool isNeedFollowing;
 
     private float nextBarkTime;
 
@@ -53,106 +72,197 @@ public class DogParkAI : MonoBehaviour
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
 
-        nextBarkTime =
-            Time.time + Random.Range(minBarkTime,maxBarkTime);
+        hunger = PlayerPrefs.GetInt("hunger", hunger);
+        thirst = PlayerPrefs.GetInt("thirst", thirst);
 
-        nextPoopTime =
-            Time.time + Random.Range(minPoopTime,maxPoopTime);
+        nextBarkTime = Time.time + Random.Range(minBarkTime, maxBarkTime);
+        nextPoopTime = Time.time + Random.Range(minPoopTime, maxPoopTime);
 
+        StartCoroutine(HungerRoutine());
+        StartCoroutine(ThirstRoutine());
         StartCoroutine(WanderRoutine());
     }
 
     void Update()
     {
-        // Botón A
-        if (OVRInput.GetDown(OVRInput.Button.One))
+        hunger = PlayerPrefs.GetInt("hunger", hunger);
+        thirst = PlayerPrefs.GetInt("thirst", thirst);
+
+        if (OVRInput.GetDown(OVRInput.Button.Three))
         {
             CallDog();
         }
 
-        // Botón B
         if (OVRInput.GetDown(OVRInput.Button.Two))
         {
             FetchBall();
         }
 
-        // Ladrido automático
+        if (NeedsAttention() &&
+            !isNeedFollowing &&
+            !comingToPlayer &&
+            !isBarking)
+        {
+            StartCoroutine(NeedFollowBarkRoutine());
+        }
 
         if (!comingToPlayer &&
             !isBarking &&
+            !isNeedFollowing &&
             Time.time >= nextBarkTime)
         {
             StartCoroutine(BarkRoutine());
         }
 
-        // Cacas
-
         if (!comingToPlayer &&
             !isBarking &&
+            !isNeedFollowing &&
             currentPoops < maxPoops &&
             Time.time >= nextPoopTime)
         {
             CreatePoop();
 
             nextPoopTime =
-                Time.time +
-                Random.Range(
-                    minPoopTime,
-                    maxPoopTime);
+                Time.time + Random.Range(minPoopTime, maxPoopTime);
         }
 
-        // Dormir pelota
-
-        if (!carryingBall && ball!=null)
+        if (!carryingBall && ball != null)
         {
-            Rigidbody rb =
-                ball.GetComponent<Rigidbody>();
+            Rigidbody rb = ball.GetComponent<Rigidbody>();
 
-            if (rb!=null &&
-                rb.linearVelocity.magnitude<0.05f)
+            if (rb != null && rb.linearVelocity.magnitude < 0.05f)
             {
-                rb.linearVelocity=Vector3.zero;
-                rb.angularVelocity=Vector3.zero;
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
             }
         }
     }
 
+    IEnumerator HungerRoutine()
+    {
+        while (true)
+        {
+            float waitTime =
+                hunger > 50 ? hungerTickAbove50 : hungerTickBelow50;
+
+            yield return new WaitForSeconds(waitTime);
+
+            hunger = Mathf.Clamp(hunger - 1, 1, 100);
+            PlayerPrefs.SetInt("hunger", hunger);
+            PlayerPrefs.Save();
+        }
+    }
+
+    IEnumerator ThirstRoutine()
+    {
+        while (true)
+        {
+            float waitTime =
+                thirst > 50 ? thirstTickAbove50 : thirstTickBelow50;
+
+            yield return new WaitForSeconds(waitTime);
+
+            thirst = Mathf.Clamp(thirst - 1, 1, 100);
+            PlayerPrefs.SetInt("thirst", thirst);
+            PlayerPrefs.Save();
+        }
+    }
+
+    bool NeedsAttention()
+    {
+        return hunger < hungryThreshold || thirst < thirstThreshold;
+    }
+
+    IEnumerator NeedFollowBarkRoutine()
+    {
+        if (playerTarget == null)
+            yield break;
+
+        isNeedFollowing = true;
+
+        agent.isStopped = false;
+        agent.speed = runSpeed;
+        agent.stoppingDistance = needStopDistance;
+
+        float barkTimer = 0f;
+        float nextPathUpdateTime = 0f;
+
+        while (NeedsAttention())
+        {
+            hunger = PlayerPrefs.GetInt("hunger", hunger);
+            thirst = PlayerPrefs.GetInt("thirst", thirst);
+
+            if (Time.time >= nextPathUpdateTime)
+            {
+                nextPathUpdateTime = Time.time + needPathUpdateInterval;
+                agent.SetDestination(playerTarget.position);
+            }
+
+            if (agent.remainingDistance > agent.stoppingDistance + 0.2f)
+            {
+                animator.SetBool("walking", false);
+                animator.SetBool("run", true);
+            }
+            else
+            {
+                animator.SetBool("run", false);
+
+                barkTimer += Time.deltaTime;
+
+                if (barkTimer >= needBarkRepeatTime)
+                {
+                    animator.SetTrigger("bark");
+
+                    if (audioSource != null && barkSound != null)
+                    {
+                        audioSource.PlayOneShot(barkSound);
+                    }
+
+                    barkTimer = 0f;
+                }
+            }
+
+            yield return null;
+        }
+
+        animator.SetBool("run", false);
+        animator.SetBool("walking", false);
+
+        agent.stoppingDistance = 0.3f;
+        agent.speed = walkSpeed;
+
+        isNeedFollowing = false;
+    }
+
     IEnumerator WanderRoutine()
     {
-        while(true)
+        while (true)
         {
-            if(!comingToPlayer &&
-               !isBarking)
+            if (!comingToPlayer &&
+                !isBarking &&
+                !isNeedFollowing)
             {
-                agent.isStopped=false;
+                agent.isStopped = false;
+                agent.speed = walkSpeed;
 
-                agent.speed=walkSpeed;
+                animator.SetBool("run", false);
+                animator.SetBool("walking", true);
 
-                animator.SetBool(
-                    "run",
-                    false);
+                Vector3 destination =
+                    GetRandomNavMeshPoint(transform.position, wanderRadius);
 
-                animator.SetBool(
-                    "walking",
-                    true);
+                agent.SetDestination(destination);
 
-                Vector3 destination=
-                    GetRandomNavMeshPoint(
-                        transform.position,
-                        wanderRadius);
-
-                agent.SetDestination(
-                    destination);
-
-                while(
-                    !comingToPlayer &&
-                    !isBarking &&
-                    (agent.pathPending ||
-                    agent.remainingDistance>
-                    agent.stoppingDistance))
+                while (!comingToPlayer &&
+                       !isBarking &&
+                       !isNeedFollowing &&
+                       (agent.pathPending ||
+                        agent.remainingDistance > agent.stoppingDistance))
                 {
                     yield return null;
                 }
+
+                animator.SetBool("walking", false);
             }
 
             yield return null;
@@ -161,281 +271,208 @@ public class DogParkAI : MonoBehaviour
 
     IEnumerator BarkRoutine()
     {
-        isBarking=true;
+        isBarking = true;
 
         agent.ResetPath();
-        agent.isStopped=true;
+        agent.isStopped = true;
 
-        animator.SetBool(
-            "walking",
-            false);
+        animator.SetBool("walking", false);
+        animator.SetBool("run", false);
+        animator.SetTrigger("bark");
 
-        animator.SetBool(
-            "run",
-            false);
-
-        // ANIMACIÓN
-
-        animator.SetTrigger(
-            "bark");
-
-        // SONIDO
-
-        if(audioSource!=null &&
-           barkSound!=null)
+        if (audioSource != null && barkSound != null)
         {
-            audioSource.PlayOneShot(
-                barkSound);
+            audioSource.PlayOneShot(barkSound);
         }
 
-        yield return new WaitForSeconds(
-            barkDuration);
+        yield return new WaitForSeconds(barkDuration);
 
-        isBarking=false;
+        isBarking = false;
+        agent.isStopped = false;
 
-        agent.isStopped=false;
-
-        nextBarkTime=
-            Time.time+
-            Random.Range(
-                minBarkTime,
-                maxBarkTime);
+        nextBarkTime =
+            Time.time + Random.Range(minBarkTime, maxBarkTime);
     }
 
     public void CallDog()
     {
-        if(!comingToPlayer &&
-           !isBarking)
+        if (!comingToPlayer && !isBarking && !isNeedFollowing)
         {
-            StartCoroutine(
-                ComeToPlayerRoutine());
+            StartCoroutine(ComeToPlayerRoutine());
         }
     }
 
     public void FetchBall()
     {
-        if(comingToPlayer ||
-           isBarking)
+        if (comingToPlayer || isBarking || isNeedFollowing)
             return;
 
-        if(ball==null)
+        if (ball == null || playerTarget == null)
             return;
 
-        float distance=
-            Vector3.Distance(
-                playerTarget.position,
-                ball.position);
+        float distance =
+            Vector3.Distance(playerTarget.position, ball.position);
 
-        if(distance<
-           minBallDistanceFromPlayer)
+        if (distance < minBallDistanceFromPlayer)
             return;
 
-        StartCoroutine(
-            FetchBallRoutine());
+        AddPlayerPrefInt("nBalls", 1);
+
+        StartCoroutine(FetchBallRoutine());
     }
 
     IEnumerator ComeToPlayerRoutine()
     {
-        comingToPlayer=true;
+        comingToPlayer = true;
 
-        agent.speed=runSpeed;
+        agent.speed = runSpeed;
 
-        animator.SetBool(
-            "walking",
-            false);
+        animator.SetBool("walking", false);
+        animator.SetBool("run", true);
 
-        animator.SetBool(
-            "run",
-            true);
+        agent.SetDestination(playerTarget.position);
 
-        agent.SetDestination(
-            playerTarget.position);
-
-        while(
-            agent.pathPending ||
-            agent.remainingDistance>
-            playerStopDistance)
+        while (agent.pathPending ||
+               agent.remainingDistance > playerStopDistance)
         {
             yield return null;
         }
 
-        animator.SetBool(
-            "run",
-            false);
+        animator.SetBool("run", false);
 
-        comingToPlayer=false;
+        comingToPlayer = false;
     }
 
     IEnumerator FetchBallRoutine()
     {
-        comingToPlayer=true;
+        comingToPlayer = true;
 
-        Rigidbody ballRb=
-            ball.GetComponent<Rigidbody>();
+        Rigidbody ballRb = ball.GetComponent<Rigidbody>();
+        Collider ballCollider = ball.GetComponent<Collider>();
 
-        Collider ballCollider=
-            ball.GetComponent<Collider>();
+        agent.speed = runSpeed;
 
-        agent.speed=runSpeed;
+        animator.SetBool("walking", false);
+        animator.SetBool("run", true);
 
-        animator.SetBool(
-            "walking",
-            false);
-
-        animator.SetBool(
-            "run",
-            true);
-
-        while(
-            Vector3.Distance(
-                transform.position,
-                ball.position)>
-            ballStopDistance)
+        while (Vector3.Distance(transform.position, ball.position) > ballStopDistance)
         {
-            agent.SetDestination(
-                ball.position);
-
+            agent.SetDestination(ball.position);
             yield return null;
         }
 
-        if(ballRb!=null)
+        if (ballRb != null)
         {
-            ballRb.linearVelocity=
-                Vector3.zero;
-
-            ballRb.angularVelocity=
-                Vector3.zero;
-
-            ballRb.isKinematic=true;
+            ballRb.linearVelocity = Vector3.zero;
+            ballRb.angularVelocity = Vector3.zero;
+            ballRb.isKinematic = true;
         }
 
-        if(ballCollider!=null)
+        if (ballCollider != null)
         {
-            ballCollider.enabled=false;
+            ballCollider.enabled = false;
         }
 
-        carryingBall=true;
+        carryingBall = true;
 
-        agent.SetDestination(
-            playerTarget.position);
+        agent.SetDestination(playerTarget.position);
 
-        while(
-            agent.pathPending ||
-            agent.remainingDistance>
-            bringBallStopDistance)
+        while (agent.pathPending ||
+               agent.remainingDistance > bringBallStopDistance)
         {
             yield return null;
         }
 
-        carryingBall=false;
+        carryingBall = false;
 
-        ball.position=
-            playerTarget.position+
-            playerTarget.forward;
+        ball.position =
+            playerTarget.position + playerTarget.forward;
 
-        if(ballCollider!=null)
+        if (ballCollider != null)
         {
-            ballCollider.enabled=true;
+            ballCollider.enabled = true;
         }
 
-        if(ballRb!=null)
+        if (ballRb != null)
         {
-            ballRb.isKinematic=false;
+            ballRb.isKinematic = false;
         }
 
-        animator.SetBool(
-            "run",
-            false);
+        animator.SetBool("run", false);
 
-        comingToPlayer=false;
+        comingToPlayer = false;
     }
 
     void CreatePoop()
     {
-        if(poopPrefab==null)
+        if (poopPrefab == null)
             return;
 
-        Vector3 position=
-            transform.position-
-            transform.forward*0.4f;
+        Vector3 position =
+            transform.position - transform.forward * 0.4f;
 
-        GameObject poop=
-            Instantiate(
-                poopPrefab,
-                position,
-                Quaternion.identity);
+        GameObject poop =
+            Instantiate(poopPrefab, position, Quaternion.identity);
 
-        PoopBehaviour pb=
-            poop.GetComponent<
-                PoopBehaviour>();
+        PoopBehaviour pb =
+            poop.GetComponent<PoopBehaviour>();
 
-        if(pb!=null)
+        if (pb != null)
         {
-            pb.dog=this;
+            pb.dog = this;
         }
 
         currentPoops++;
 
-        StartCoroutine(
-            RemovePoopAfterTime(
-                poop,
-                120f));
+        StartCoroutine(RemovePoopAfterTime(poop, 120f));
     }
 
-    IEnumerator RemovePoopAfterTime(
-        GameObject poop,
-        float time)
+    IEnumerator RemovePoopAfterTime(GameObject poop, float time)
     {
-        yield return new WaitForSeconds(
-            time);
+        yield return new WaitForSeconds(time);
 
-        if(poop!=null)
+        if (poop != null)
         {
             Destroy(poop);
 
             currentPoops--;
 
-            currentPoops=
-                Mathf.Max(
-                    currentPoops,
-                    0);
+            currentPoops = Mathf.Max(currentPoops, 0);
         }
     }
 
     public void RemovePoopFromCount()
     {
-        currentPoops--;
+        currentPoops =
+            Mathf.Max(currentPoops - 1, 0);
 
-        currentPoops=
-            Mathf.Max(
-                currentPoops,
-                0);
+        AddPlayerPrefInt("nPoops", 1);
+    }
+
+    private void AddPlayerPrefInt(string key, int amount)
+    {
+        int current = PlayerPrefs.GetInt(key, 0);
+
+        PlayerPrefs.SetInt(key, current + amount);
+        PlayerPrefs.Save();
     }
 
     void UpdateBallCarry()
     {
-        if(!carryingBall)
+        if (!carryingBall)
             return;
 
-        if(ball==null ||
-           mouthPoint==null)
+        if (ball == null || mouthPoint == null)
             return;
 
-        ball.position=
-            mouthPoint.position;
-
-        ball.rotation=
-            mouthPoint.rotation;
+        ball.position = mouthPoint.position;
+        ball.rotation = mouthPoint.rotation;
     }
 
-    Vector3 GetRandomNavMeshPoint(
-        Vector3 center,
-        float radius)
+    Vector3 GetRandomNavMeshPoint(Vector3 center, float radius)
     {
-        Vector3 random=
-            center+
-            Random.insideUnitSphere*
-            radius;
+        Vector3 random =
+            center + Random.insideUnitSphere * radius;
 
         NavMesh.SamplePosition(
             random,
