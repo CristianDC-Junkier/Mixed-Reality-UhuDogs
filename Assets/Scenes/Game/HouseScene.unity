@@ -45047,7 +45047,7 @@ Transform:
   m_GameObject: {fileID: 1000901385}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -19.214254, y: -0.12670727, z: -6.391207}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -77271,6 +77271,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 298717334537657805, guid: 87262b3277adf2f4b8fda8c30f008b3c, type: 3}
+      propertyPath: panelBrightness
+      value: 
+      objectReference: {fileID: 431089227}
     - target: {fileID: 476375576357911358, guid: 87262b3277adf2f4b8fda8c30f008b3c, type: 3}
       propertyPath: m_Enabled
       value: 1

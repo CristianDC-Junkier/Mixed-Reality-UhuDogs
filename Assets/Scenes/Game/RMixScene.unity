@@ -91914,6 +91914,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 298717334537657805, guid: 87262b3277adf2f4b8fda8c30f008b3c, type: 3}
+      propertyPath: panelBrightness
+      value: 
+      objectReference: {fileID: 609412671}
     - target: {fileID: 476375576357911358, guid: 87262b3277adf2f4b8fda8c30f008b3c, type: 3}
       propertyPath: playerCamera
       value: 

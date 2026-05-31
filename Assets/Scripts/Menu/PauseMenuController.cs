@@ -63,17 +63,15 @@ public class PauseMenuController : MonoBehaviour
 
     public void QuitGame()
     {
-        StartCoroutine(Quitransition()); // Arrancamos la transición
+        StartCoroutine(Quitransition()); 
     }
 
     IEnumerator Quitransition()
     {
-        pauseMenu.SetActive(false);
 
         float tiempo = 0;
         float duracionFade = 1.5f;
 
-        // Fundido a negro
         while (tiempo < duracionFade)
         {
             tiempo += Time.unscaledDeltaTime;
@@ -86,7 +84,6 @@ public class PauseMenuController : MonoBehaviour
 
         audioSource.Stop();
 
-        // Música de transición final antes de cambiar escena
         audioSource.clip = doorSound;
         audioSource.volume = 1f;
         audioSource.Play();
