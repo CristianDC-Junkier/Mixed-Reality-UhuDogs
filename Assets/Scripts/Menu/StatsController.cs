@@ -24,7 +24,7 @@ public class StatsController : MonoBehaviour
         nBalls.text = balls.ToString();
         nWalks.text = walks.ToString();
         nPoops.text = poops.ToString();
-        distance.text = dist.ToString();
+        distance.text = dist.ToString("F2");
     }
 
     public void PlayClick()
