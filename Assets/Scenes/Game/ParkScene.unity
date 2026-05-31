@@ -61600,7 +61600,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5087551840219002719, guid: 62270840728a9f842ac7dcf2dc6f2b4f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -38.092663
+      value: -26
       objectReference: {fileID: 0}
     - target: {fileID: 5087551840219002719, guid: 62270840728a9f842ac7dcf2dc6f2b4f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -61608,7 +61608,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5087551840219002719, guid: 62270840728a9f842ac7dcf2dc6f2b4f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -17.723404
+      value: -7
       objectReference: {fileID: 0}
     - target: {fileID: 5087551840219002719, guid: 62270840728a9f842ac7dcf2dc6f2b4f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -71333,6 +71333,10 @@ PrefabInstance:
       propertyPath: darkScreen
       value: 
       objectReference: {fileID: 1195803020}
+    - target: {fileID: 395221501555978052, guid: e052a8690bbd2b44c80961621ad7161b, type: 3}
+      propertyPath: nextSceneName
+      value: HouseScene
+      objectReference: {fileID: 0}
     - target: {fileID: 3027531841441749220, guid: e052a8690bbd2b44c80961621ad7161b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.783
@@ -80995,23 +80999,49 @@ MonoBehaviour:
   playerTarget: {fileID: 1919868045}
   ball: {fileID: 211870600}
   mouthPoint: {fileID: 2100343383}
+  minBallDistanceFromPlayer: 3
+  ballStopDistance: 2
+  bringBallStopDistance: 4
+  hunger: 100
+  hungryThreshold: 40
+  hungerTickAbove50: 5
+  hungerTickBelow50: 10
+  thirst: 100
+  thirstThreshold: 40
+  drinkTickAbove50: 5
+  drinkTickBelow50: 10
+  energy: 100
+  sleepThreshold: 40
+  energyTickAbove50: 5
+  energyTickBelow50: 10
+  bath: 100
+  bathThreshold: 30
+  fullAfterPoop: 100
+  poopAnimationDuration: 3.5
+  bathTickAbove50: 5
+  bathTickBelow50: 10
+  poopPrefab: {fileID: 8422485754694478115, guid: 2d3747f03e206f24d88aedc790118243, type: 3}
+  maxPoops: 5
+  popDeleteTime: 120
+  wanderRadius: 8
+  minWalkTime: 6
+  maxWalkTime: 14
+  pauseBetweenWalks: 0.3
+  walkSpeed: 3.5
+  runSpeed: 6
+  playerStopDistance: 4
+  barkRepeatTime: 2
   audioSource: {fileID: 1795681197}
   barkSound: {fileID: 8300000, guid: d1844320407491941abe94b381d8252f, type: 3}
-  minBallDistanceFromPlayer: 3
-  ballStopDistance: 2.5
-  bringBallStopDistance: 1.5
-  walkSpeed: 1.4
-  runSpeed: 4
-  wanderRadius: 8
-  playerStopDistance: 1.5
-  lookAtPlayerTime: 5
+  minBarkTime: 35
+  maxBarkTime: 90
   barkDuration: 1.5
-  minBarkTime: 25
-  maxBarkTime: 60
-  poopPrefab: {fileID: 8422485754694478115, guid: 2d3747f03e206f24d88aedc790118243, type: 3}
-  minPoopTime: 5
-  maxPoopTime: 10
-  maxPoops: 2
+  energyMan: {fileID: 8300000, guid: 58ebebd7ed67da7458c53b7120a3e527, type: 3}
+  energyWomen: {fileID: 8300000, guid: 9667d0fa41b559649a77d9c9db78d0e0, type: 3}
+  HungryMan: {fileID: 8300000, guid: 4f92f42d7b2deec42b6119d6b93b5360, type: 3}
+  HungryWomen: {fileID: 8300000, guid: 6b389399c346267468a03eb11555e5d5, type: 3}
+  ThirstyMan: {fileID: 8300000, guid: 94130d05af3e5584ab2a3d1c9683646f, type: 3}
+  ThirstyWomen: {fileID: 8300000, guid: 5b3eed93b88d8d740bde09e5e49d9c63, type: 3}
 --- !u!4 &1827635444 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5087551840219002719, guid: 62270840728a9f842ac7dcf2dc6f2b4f, type: 3}
@@ -97121,6 +97151,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 205291325063496271, guid: 7578323afa14ca140a80045be3d7203a, type: 3}
+      propertyPath: m_TagString
+      value: trashbin
+      objectReference: {fileID: 0}
     - target: {fileID: 400407889700088765, guid: 7578323afa14ca140a80045be3d7203a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -39.18346

@@ -16,7 +16,8 @@ public class ComeBackSequence : MonoBehaviour
     public AudioClip doorSound;
 
     [Header("Escena a cambiar")]
-    public Object nextScene;
+    [Tooltip("Escribe el nombre exacto de la escena como aparece en tus assets")]
+    public string nextSceneName;
 
     void Start()
     {
@@ -73,6 +74,6 @@ public class ComeBackSequence : MonoBehaviour
         audioSource.Play();
         yield return new WaitForSeconds(doorSound.length);
 
-        SceneManager.LoadScene(nextScene.name);
+        SceneManager.LoadScene(nextSceneName);
     }
 }

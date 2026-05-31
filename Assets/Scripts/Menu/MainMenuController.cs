@@ -16,8 +16,9 @@ public class MainMenuController : MonoBehaviour
     public AudioClip doorSound;
 
     [Header("Escena a cambiar")]
-    public Object nextScene; 
-    
+    [Tooltip("Escribe el nombre exacto de la escena como aparece en tus assets")]
+    public string nextSceneName;
+
     void Start()
     {
         if (darkScreen != null) darkScreen.color = new Color(0, 0, 0, 0);
@@ -55,7 +56,7 @@ public class MainMenuController : MonoBehaviour
         audioSource.Play();
         yield return new WaitForSeconds(windowsOff.length);
 
-        SceneManager.LoadScene(nextScene.name);
+        SceneManager.LoadScene(nextSceneName);
     }
 
     public void QuitGame()

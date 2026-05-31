@@ -78,6 +78,14 @@ public class DogAI : MonoBehaviour
     public float maxBarkTime = 90f;
     public float barkDuration = 1.5f;
 
+    [Header("Voces")]
+    public AudioClip bathMan;
+    public AudioClip bathWomen;
+    public AudioClip HungryMan;
+    public AudioClip HungryWomen;
+    public AudioClip ThirstyMan;
+    public AudioClip ThirstyWomen;
+
     private Animator animator;
     private NavMeshAgent agent;
 
@@ -88,6 +96,26 @@ public class DogAI : MonoBehaviour
     private bool isBarking;
 
     private float nextBarkTime;
+
+    private int gender;
+
+    private AudioClip GetUrgentNeedAudio()
+    {
+        if (hunger < hungryThreshold && food == 0)
+        {
+            return (gender == 0) ? HungryMan : HungryWomen;
+        }
+        else if (thirst < thirstThreshold && water == 0)
+        {
+            return (gender == 0) ? ThirstyMan : ThirstyWomen;
+        }
+        else if (bath < bathThreshold)
+        {
+            return (gender == 0) ? bathMan : bathWomen;
+        }
+
+        return null; 
+    }
 
     void Start()
     {
@@ -332,15 +360,19 @@ public class DogAI : MonoBehaviour
         agent.isStopped = false;
         isSleeping = false;
     }
+
     IEnumerator GoFollowBark()
     {
         if (playerTarget == null) yield break;
         isFollowBark = true;
 
+        gender = PlayerPrefs.GetInt("gender", 0);
+
         agent.isStopped = false;
         agent.speed = runSpeed;
         agent.stoppingDistance = playerStopDistance;
 
+        int barkCount = 0;
         float barkTimer = 0f;
         float pathUpdateInterval = 0.3f;
         float nextPathUpdateTime = 0f;
@@ -349,13 +381,14 @@ public class DogAI : MonoBehaviour
               (hunger < hungryThreshold && food == 0) ||
               (thirst < thirstThreshold && water == 0))
         {
-            food = PlayerPrefs.GetInt("food", 0);
-            water = PlayerPrefs.GetInt("water", 0);
 
             if (Time.time >= nextPathUpdateTime)
             {
                 nextPathUpdateTime = Time.time + pathUpdateInterval;
                 agent.SetDestination(playerTarget.position);
+
+                food = PlayerPrefs.GetInt("food", 0);
+                water = PlayerPrefs.GetInt("water", 0);
             }
 
             if (agent.remainingDistance > agent.stoppingDistance + 0.1f && agent.velocity.magnitude > 0.1f)
@@ -368,13 +401,30 @@ public class DogAI : MonoBehaviour
             }
 
             barkTimer += Time.deltaTime;
+
             if (barkTimer >= barkRepeatTime)
             {
                 if (agent.remainingDistance <= agent.stoppingDistance + 0.3f)
                 {
-                    animator.SetTrigger("bark");
+                    barkCount++;
 
-                    if (audioSource != null && barkSound != null) audioSource.PlayOneShot(barkSound);
+                    if (barkCount >= 5)
+                    {
+                        barkCount = 0; 
+
+                        AudioClip clipToPlay = GetUrgentNeedAudio();
+
+                        if (audioSource != null && clipToPlay != null)
+                        {
+                            audioSource.PlayOneShot(clipToPlay);
+                        }
+                    }
+                    else
+                    {
+                        animator.SetTrigger("bark");
+
+                        if (audioSource != null && barkSound != null) audioSource.PlayOneShot(barkSound);
+                    }
 
                     barkTimer = 0f;
                 }
@@ -399,9 +449,11 @@ public class DogAI : MonoBehaviour
         animator.SetBool("walking", false);
         animator.SetTrigger("bark");
 
-        if (audioSource != null && barkSound != null) audioSource.PlayOneShot(barkSound);
-        
-        yield return new WaitForSeconds(barkDuration);
+        if (audioSource != null && barkSound != null)
+        {
+            audioSource.PlayOneShot(barkSound);
+            yield return new WaitForSeconds(barkSound.length);
+        }
 
         nextBarkTime = Time.time + Random.Range(minBarkTime, maxBarkTime);
         agent.isStopped = false;

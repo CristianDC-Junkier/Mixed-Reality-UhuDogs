@@ -16,8 +16,9 @@ public class OutsideSequence : MonoBehaviour
     public AudioClip doorSound;
 
     [Header("Escenas")]
-    public Object leftScene;
-    public Object rightScene;
+    [Tooltip("Escribe el nombre exacto de la escena como aparece en tus assets")]
+    public string leftSceneName;
+    public string rightSceneName;
 
     void Start()
     {
@@ -35,7 +36,7 @@ public class OutsideSequence : MonoBehaviour
                 OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) > 0.8f ||
                 OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger) > 0.8f)
             {
-                yield return StartCoroutine(ChangeTransition(rightScene.name));
+                yield return StartCoroutine(ChangeTransition(rightSceneName));
                 yield break;
             }
 
@@ -45,7 +46,7 @@ public class OutsideSequence : MonoBehaviour
                 OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger) > 0.8f ||
                 OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger) > 0.8f)
             {
-                yield return StartCoroutine(ChangeTransition(leftScene.name));
+                yield return StartCoroutine(ChangeTransition(leftSceneName));
                 yield break;
             }
 
@@ -55,8 +56,6 @@ public class OutsideSequence : MonoBehaviour
 
     IEnumerator ChangeTransition(string sceneName)
     {
-        Debug.Log("Iniciando transición hacia: " + sceneName);
-
         float tiempo = 0;
         float duracionFade = 1.5f;
 
