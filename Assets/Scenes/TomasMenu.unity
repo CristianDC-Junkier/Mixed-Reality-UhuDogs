@@ -1971,7 +1971,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClicksErrorController
   audioSource: {fileID: 33182113}
-  clip: {fileID: 0}
+  clip: {fileID: 330812611}
   soundClick: {fileID: 8300000, guid: ed0ecd05a0514d642bc8209c9a65e7c7, type: 3}
   soundError: {fileID: 8300000, guid: b0a390471e0fb9e4080eac1d0edc15da, type: 3}
 --- !u!1 &34050371
