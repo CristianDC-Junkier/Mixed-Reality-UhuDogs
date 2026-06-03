@@ -45,7 +45,7 @@ public class DogMenuController : MonoBehaviour
         text.text = value + "%";
         bar.fillAmount = value / 100f;
 
-        if (value > 55)
+        if (value > 50)
             text.color = Color.white;
         else
             text.color = Color.black;
