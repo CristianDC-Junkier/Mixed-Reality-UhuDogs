@@ -28,7 +28,7 @@ public class DogMenuController : MonoBehaviour
         savedText.text = "";
 
         // Percentages
-        int energy = PlayerPrefs.GetInt("energy", 0);
+        int energy = PlayerPrefs.GetInt("energy", 100);
         int hunger = PlayerPrefs.GetInt("hunger", 0);
         int thirst = PlayerPrefs.GetInt("thirst", 0);
         int bath = PlayerPrefs.GetInt("bath", 0);
@@ -45,10 +45,10 @@ public class DogMenuController : MonoBehaviour
         text.text = value + "%";
         bar.fillAmount = value / 100f;
 
-        if (value > 50)
+        if (value > 53)
             text.color = Color.white;
         else
-            text.color = Color.black;
+            text.color = Color.grey;
     }
 
     public void SaveName()
